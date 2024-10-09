@@ -39,12 +39,14 @@
       &-index {
         display: inline-block;
         margin-right: 4px;
+        color: var(--color-text-1);
         font-weight: 600;
         font-size: 20px;
         line-height: 23px;
       }
 
       &-text {
+        color: var(--color-text-1);
         font-weight: 500;
         font-size: 16px;
         line-height: 24px;

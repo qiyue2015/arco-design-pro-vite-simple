@@ -51,6 +51,7 @@
         overflow: hidden;
 
         &-title {
+          color: var(--color-text-1);
           font-weight: 500;
           font-size: 30px;
           line-height: 38px;
@@ -58,6 +59,7 @@
 
         &-description {
           margin-top: 16px;
+          color: var(--color-text-2);
           font-size: 13px;
           line-height: 22px;
         }
