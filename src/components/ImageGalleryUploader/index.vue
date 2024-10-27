@@ -56,7 +56,8 @@
     try {
       loading.value = true;
       const response = await queryFiles({
-        page: current.value,
+        current: current.value,
+        pageSize: pageSize.value,
       });
       list.value = response.data;
       total.value = response.meta.total;
@@ -170,9 +171,9 @@
   };
 
   // 上传失败
-  const uploadError = (error: Error) => {
+  const uploadError = (error: FileItem) => {
     uploadFiles.value = uploadFiles.value.filter((item) => item !== error.name);
-    Message.error(error.message);
+    Message.error(error?.response?.message || '上传失败');
   };
 
   // 监控待上传文件列表，当全部上传完成时，刷新列表

@@ -7,6 +7,11 @@ export interface FileRecord {
   url: string;
 }
 
+export interface FileParams {
+  current: number;
+  pageSize: number;
+}
+
 // 列表返回数据
 export interface FilesResponse {
   data: FileRecord[];
@@ -19,7 +24,7 @@ export interface FilesResponse {
 }
 
 // 图片列表
-export function queryFiles(params) {
+export function queryFiles(params: FileParams) {
   return axios.get<any, FilesResponse>('/api/file/images', {
     params,
   });
