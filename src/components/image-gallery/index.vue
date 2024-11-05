@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, onMounted, ref, watch } from 'vue';
+  import { computed, onMounted, ref, useAttrs, useSlots, watch } from 'vue';
   import { Message } from '@arco-design/web-vue';
   import { FileItem } from '@arco-design/web-vue/es/upload/interfaces';
   import { getToken } from '@/utils/auth';
@@ -10,32 +10,25 @@
       type: [Array, String],
       default: () => [],
     },
-    limit: {
-      type: Number,
-      default: 0,
+    buttonText: {
+      type: String,
+      default: '选择图片',
     },
     name: {
       type: String,
       default: 'file',
     },
-    /**
-     *  square (1:1)：正方形
-     *  widescreen (16:9)：宽屏
-     *  standard (4:3)：标准屏
-     *  photo (3:2)：照片比例
-     */
-    ratio: {
-      type: String,
-      default: 'square',
-    },
   });
 
-  const emits = defineEmits(['update:modelValue']);
+  const emits = defineEmits(['update:modelValue', 'change']);
+
+  const attrs = useAttrs();
+  const slots = useSlots();
 
   const token = getToken();
   const action = `${import.meta.env.VITE_API_BASE_URL}/api/upload/image`;
 
-  const fileLimit = ref(props.limit);
+  const fileLimit = ref(attrs.limit || 0);
   const fileList = ref<FileItem[]>([]);
   const selectKeys = ref<string[]>([]);
   const selectCount = computed(() => selectKeys.value.length);
@@ -55,13 +48,13 @@
   const fetchData = async () => {
     try {
       loading.value = true;
-      const response = await queryFiles({
+      const { data, meta } = await queryFiles({
         current: current.value,
         pageSize: pageSize.value,
       });
-      list.value = response.data;
-      total.value = response.meta.total;
-      pageSize.value = response.meta.page_size;
+      list.value = data;
+      total.value = meta.total;
+      pageSize.value = meta.page_size;
     } finally {
       loading.value = false;
     }
@@ -112,7 +105,7 @@
 
     // 全部返回
     const filterFiles = list.value.filter((item) => selectKeys.value.includes(item.id));
-    const newFiles = filterFiles.map((item) => ({ uid: item.id, url: item.url }));
+    const newFiles = filterFiles.map((item) => ({ uid: item.id, name: item.name, url: item.url }));
     const allFiles = [...fileList.value, ...newFiles];
 
     if (fileLimit.value === 1) {
@@ -120,15 +113,18 @@
       const file = allFiles[allFiles.length - 1];
       fileList.value = [file]; // 为了更改视图
       emits('update:modelValue', file?.url || '');
+      emits('change', fileList.value);
     } else if (fileLimit.value > 1) {
       // 返回张选中的图片里最后的 fileLimit.value 张
       const files = allFiles.slice(-fileLimit.value);
       fileList.value = files; // 为了更改视图
       emits('update:modelValue', files);
+      emits('change', files);
     } else {
       // 全部返回
       fileList.value = allFiles; // 为了更改视图
       emits('update:modelValue', allFiles);
+      emits('change', allFiles);
     }
   };
 
@@ -189,6 +185,7 @@
       fileList.value = props.modelValue.map((item, index) => {
         return {
           uid: item.id || `uid-${index}-${Date.now()}`,
+          name: item.url.substring(item.url.lastIndexOf('/') + 1),
           url: item.url,
         };
       });
@@ -196,8 +193,11 @@
       // 传入字符串时，表示只能 1 张图
       fileLimit.value = 1;
       fileList.value = [
-        // 构造组件需要的数据结构 FileItem
-        { uid: `uid-${Date.now()}`, url: props.modelValue },
+        {
+          uid: `uid-${Date.now()}`,
+          name: props.modelValue.substring(props.modelValue.lastIndexOf('/') + 1),
+          url: props.modelValue,
+        },
       ];
     } else {
       fileList.value = [];
@@ -210,15 +210,23 @@
     <!--主要用于展示图片信息及上传按钮，并不太想去重写样式，就复用它了-->
     <!--还好它有个 button-click 可以阻止后续的动作-->
     <a-upload
+      v-bind="{ ...attrs }"
       v-model:file-list="fileList"
-      :limit="fileLimit"
-      :class="'m-' + ratio"
-      :image-preview="true"
-      list-type="picture-card"
       image-loading="lazy"
+      image-preview
       @before-remove="beforeRemove"
       @button-click="handleButtonClick"
-    />
+    >
+      <template v-for="(slotContent, slotName) in slots" #[slotName]>
+        <slot :name="slotName" v-bind="slotContent" />
+      </template>
+      <template v-if="!slots['upload-button'] && attrs['list-type'] !== 'picture-card'" #upload-button>
+        <a-button :loading="uploadLoading" type="primary">
+          <template #icon><icon-upload /></template>
+          {{ buttonText }}
+        </a-button>
+      </template>
+    </a-upload>
 
     <!--图片上传、选择弹窗-->
     <a-modal v-model:visible="show" :mask-closable="false" width="810px" title-align="start" @close="closeModal">
@@ -230,7 +238,6 @@
             <a-upload
               :multiple="true"
               :show-file-list="false"
-              :limit="limit"
               :action="action"
               :headers="{ Authorization: `Bearer ${token}` }"
               name="image"
@@ -328,41 +335,6 @@
       display: flex;
       gap: 12px;
       align-items: center;
-    }
-  }
-
-  //square (1:1)：正方形
-
-  //standard (4:3)：标准屏
-  :deep(.m-standard) {
-    .arco-upload-picture-card {
-      min-width: 106px;
-    }
-
-    .arco-upload-list-picture {
-      width: 106px;
-    }
-  }
-
-  //portrait (3:4)：照片比例
-  :deep(.m-portrait) {
-    .arco-upload-picture-card {
-      min-width: 60px;
-    }
-
-    .arco-upload-list-picture {
-      width: 60px;
-    }
-  }
-
-  //widescreen (16:9)：宽屏
-  :deep(.m-widescreen) {
-    .arco-upload-picture-card {
-      min-width: 142px;
-    }
-
-    .arco-upload-list-picture {
-      width: 142px;
     }
   }
 

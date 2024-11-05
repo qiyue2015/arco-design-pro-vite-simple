@@ -145,7 +145,7 @@
 
 <style lang="less" scoped>
   :deep(.arco-menu-inner) {
-    padding: 4px;
+    padding: 8px;
 
     .arco-menu-inline-header {
       display: flex;
