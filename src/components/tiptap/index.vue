@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useAttrs } from 'vue';
+  import { watch, useAttrs } from 'vue';
   import { EditorContent, useEditor } from '@tiptap/vue-3';
   import StarterKit from '@tiptap/starter-kit';
   import Placeholder from '@tiptap/extension-placeholder';
@@ -9,7 +9,6 @@
   import Color from '@tiptap/extension-color';
   import TextAlign from '@tiptap/extension-text-align';
   import TextStyle from '@tiptap/extension-text-style';
-  // import Image from '@tiptap/extension-image';
   import { FontSize } from './extensions/FontSize';
   import Image from './extensions/Image';
 
@@ -51,6 +50,15 @@
       emits('update:modelValue', editor.getHTML());
     },
   });
+
+  watch(
+    () => props.modelValue,
+    (value) => {
+      if (tiptapEditor.value && value !== tiptapEditor.value.getHTML()) {
+        tiptapEditor.value.commands.setContent(value);
+      }
+    }
+  );
 </script>
 
 <template>
@@ -82,6 +90,7 @@
 
     .editor-content {
       position: relative;
+      width: 100%;
       height: 380px;
       overflow: auto;
       scrollbar-width: none;
