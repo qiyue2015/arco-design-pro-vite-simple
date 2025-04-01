@@ -1,10 +1,6 @@
 <template>
   <a-spin :loading="loading" style="width: 100%">
-    <a-card
-      class="general-card"
-      :header-style="{ paddingBottom: '0' }"
-      :body-style="{ padding: '17px 20px 21px 20px' }"
-    >
+    <a-card class="general-card" :header-style="{ paddingBottom: '0' }" :body-style="{ padding: '17px 20px 21px 20px' }">
       <template #title>
         {{ $t('workplace.popularContent') }}
       </template>
@@ -89,15 +85,19 @@
   .general-card {
     min-height: 395px;
   }
+
   :deep(.arco-table-tr) {
     height: 44px;
+
     .arco-typography {
       margin-bottom: 0;
     }
   }
+
   .increases-cell {
     display: flex;
     align-items: center;
+
     span {
       margin-right: 4px;
     }
