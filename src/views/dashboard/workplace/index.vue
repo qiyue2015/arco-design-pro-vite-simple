@@ -121,23 +121,23 @@
 
 <style lang="less" scoped>
   .container {
-    min-width: 1000px;
-    max-width: 1240px;
     margin: 0 auto;
+    max-width: 1240px;
+    min-width: 1000px;
     padding: 32px;
   }
 
   .question {
     a {
-      display: block;
-      margin-bottom: 8px;
-      padding: 0;
       color: var(--color-text-2);
+      display: block;
       font-size: 13px;
       line-height: 22px;
-      text-decoration: none;
+      margin-bottom: 8px;
+      padding: 0;
       background-color: transparent;
       border-radius: var(--border-radius-small);
+      text-decoration: none;
       transition: all 0.1s linear;
     }
   }

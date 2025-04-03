@@ -38,30 +38,29 @@
       width: 100%;
       min-height: 220px;
     }
-
     &-inner {
-      position: relative;
       display: flex;
       align-items: flex-start;
+      position: relative;
 
       &-content {
         flex: 1;
+        overflow: hidden;
         margin-right: 540px;
         padding-top: 16px;
-        overflow: hidden;
 
         &-title {
-          color: var(--color-text-1);
           font-weight: 500;
           font-size: 30px;
           line-height: 38px;
+          color: var(--color-text-1);
         }
 
         &-description {
           margin-top: 16px;
-          color: var(--color-text-2);
           font-size: 13px;
           line-height: 22px;
+          color: var(--color-text-2);
         }
 
         &-operation {
@@ -70,15 +69,15 @@
       }
 
       &-thumb {
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 2;
         height: 220px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 2;
 
         img {
-          width: 480px;
           height: 220px;
+          width: 480px;
         }
       }
     }

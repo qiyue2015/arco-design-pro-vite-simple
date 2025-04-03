@@ -28,9 +28,9 @@
 
 <style lang="less" scoped>
   .container {
+    background: linear-gradient(173deg, #ecf4ff -0.79%, #d3e1ff 94.5%);
     display: flex;
     height: 100vh;
-    background: linear-gradient(173deg, #ecf4ff -0.79%, #d3e1ff 94.5%);
 
     .content {
       position: relative;
@@ -39,12 +39,11 @@
       align-items: center;
       justify-content: center;
       padding-bottom: 40px;
-
       &-inner {
         padding: 40px 64px;
-        overflow: hidden;
-        background-color: #fff;
+        background-color: #ffffff;
         border-radius: 12px;
+        overflow: hidden;
       }
     }
 

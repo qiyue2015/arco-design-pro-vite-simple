@@ -72,29 +72,29 @@
 
 <style lang="less" scoped>
   .tiptap-editor-wrapper {
-    position: relative;
     width: 100%;
+    position: relative;
     border: 1px solid var(--color-border-2);
     border-radius: var(--border-radius-small);
   }
 
   .editor-content-wrapper {
-    position: relative;
-    display: inline-flex;
-    box-sizing: border-box;
     width: 100%;
-    padding: 12px;
+    display: inline-flex;
+    position: relative;
     overflow: hidden;
+    box-sizing: border-box;
+    padding: 12px;
     color: var(--color-text-1);
     font-size: 14px;
     cursor: text;
 
     .editor-content {
-      position: relative;
       width: 100%;
       height: 380px;
-      overflow: auto;
+      position: relative;
       scrollbar-width: none;
+      overflow: auto;
     }
 
     :deep(.tiptap) {
@@ -102,11 +102,11 @@
         margin-top: 0;
       }
 
-      box-sizing: border-box;
       height: 100%;
-      overflow-x: auto;
+      box-sizing: border-box;
       font-family: sans-serif;
       line-height: 1.8;
+      overflow-x: auto;
       text-align: left;
       outline: none;
 
@@ -114,10 +114,10 @@
         margin: 1em 0;
 
         &.is-empty::before {
-          float: left;
-          height: 0;
           color: rgb(var(--gray-6));
           content: attr(data-placeholder);
+          float: left;
+          height: 0;
           pointer-events: none;
         }
       }
