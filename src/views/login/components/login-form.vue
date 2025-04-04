@@ -53,13 +53,13 @@
 <script lang="ts" setup>
   import { ref, reactive } from 'vue';
   import { useRouter } from 'vue-router';
-  import { Message } from '@arco-design/web-vue';
-  import { ValidatedError } from '@arco-design/web-vue/es/form/interface';
+  import { Message, ValidatedError } from '@arco-design/web-vue';
   import { useI18n } from 'vue-i18n';
   import { useStorage } from '@vueuse/core';
   import { useUserStore } from '@/store';
   import useLoading from '@/hooks/loading';
   import type { LoginData } from '@/api/user';
+  import { DEFAULT_ROUTE_NAME } from '@/router/constants';
 
   const router = useRouter();
   const { t } = useI18n();
@@ -91,7 +91,7 @@
         await userStore.login(values as LoginData);
         const { redirect, ...othersQuery } = router.currentRoute.value.query;
         router.push({
-          name: (redirect as string) || 'Workplace',
+          name: (redirect as string) || DEFAULT_ROUTE_NAME,
           query: {
             ...othersQuery,
           },
