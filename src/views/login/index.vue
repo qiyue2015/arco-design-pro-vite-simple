@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="login-container">
     <div class="logo">
       <div class="logo-text">{{ appStore?.app_name }}</div>
     </div>
@@ -16,14 +16,26 @@
 
 <script lang="ts" setup>
   import { useAppStore } from '@/store';
+  import { useDark } from '@vueuse/core';
   import Footer from '@/components/footer/index.vue';
   import LoginForm from './components/login-form.vue';
 
   const appStore = useAppStore();
+
+  useDark({
+    selector: 'body',
+    attribute: 'arco-theme',
+    valueDark: 'dark',
+    valueLight: 'light',
+    storageKey: 'arco-theme',
+    onChanged(dark: boolean) {
+      appStore.toggleTheme(dark);
+    },
+  });
 </script>
 
 <style lang="less" scoped>
-  .page-container {
+  .login-container {
     display: flex;
     height: 100vh;
     background-image: url('assets/images/login-bg.png');
@@ -45,7 +57,7 @@
 
         padding: 32px;
         overflow: hidden;
-        background-color: #fff;
+        background: var(--color-fill-1);
         border-radius: 12px;
       }
     }
@@ -73,6 +85,12 @@
       color: var(--color-text-1);
       font-size: 20px;
       font-family: '钉钉进步体 Regular', sans-serif;
+    }
+  }
+
+  body[arco-theme='dark'] {
+    .login-container {
+      background: var(--color-fill-2);
     }
   }
 </style>
