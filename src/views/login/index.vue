@@ -1,10 +1,6 @@
 <template>
-  <div class="container">
+  <div class="page-container">
     <div class="logo">
-      <img
-        alt="logo"
-        src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/dfdba5317c0c20ce20e64fac803d52bc.svg~tplv-49unhts6dw-image.image"
-      />
       <div class="logo-text">{{ appStore?.app_name }}</div>
     </div>
     <div class="content">
@@ -27,10 +23,13 @@
 </script>
 
 <style lang="less" scoped>
-  .container {
-    background: linear-gradient(173deg, #ecf4ff -0.79%, #d3e1ff 94.5%);
+  .page-container {
     display: flex;
     height: 100vh;
+    background-image: url('assets/images/login-bg.png');
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: cover;
 
     .content {
       position: relative;
@@ -38,12 +37,16 @@
       flex: 1;
       align-items: center;
       justify-content: center;
-      padding-bottom: 40px;
+
+      @apply pb-24;
+
       &-inner {
-        padding: 40px 64px;
-        background-color: #ffffff;
-        border-radius: 12px;
+        @apply w-full max-w-sm lg:max-w-md;
+
+        padding: 32px;
         overflow: hidden;
+        background-color: #fff;
+        border-radius: 12px;
       }
     }
 
