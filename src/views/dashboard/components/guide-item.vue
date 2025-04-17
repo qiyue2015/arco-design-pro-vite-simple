@@ -29,37 +29,37 @@
 <style lang="less" scoped>
   .guide-step-item {
     flex: 1;
-    background: var(--color-fill-1);
-    padding: 20px 24px;
     box-sizing: border-box;
+    padding: 20px 24px;
+    background: var(--color-fill-1);
 
     &-title {
       line-height: 24px;
 
       &-index {
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 23px;
         display: inline-block;
         margin-right: 4px;
         color: var(--color-text-1);
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 23px;
       }
 
       &-text {
+        color: var(--color-text-1);
         font-weight: 500;
         font-size: 16px;
         line-height: 24px;
-        color: var(--color-text-1);
       }
     }
 
     &-introduction {
+      margin: 12px 0;
       color: var(--color-text-2);
-      font-style: normal;
       font-weight: 400;
       font-size: 12px;
+      font-style: normal;
       line-height: 20px;
-      margin: 12px 0;
     }
   }
 </style>

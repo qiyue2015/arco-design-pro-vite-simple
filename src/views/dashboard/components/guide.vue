@@ -8,9 +8,9 @@
   .guide {
     display: flex;
     min-width: 1000px;
-    border-radius: 8px;
-    transition: all 0.2s linear;
     overflow: hidden;
+    border-radius: 8px;
     opacity: 1;
+    transition: all 0.2s linear;
   }
 </style>

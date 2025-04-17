@@ -20,16 +20,16 @@
     gap: 16px;
 
     .item {
-      background-color: var(--color-fill-1);
-      padding: 12px 16px;
       width: calc(50% - 8px);
+      padding: 12px 16px;
+      background-color: var(--color-fill-1);
 
       .title {
-        color: var(--color-text-1);
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 24px;
         margin-bottom: 8px;
+        color: var(--color-text-1);
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
       }
 
       .description {
