@@ -31,15 +31,19 @@
 
 <style lang="less" scoped>
   .grid-card {
-    border-radius: 4px;
+    @apply h-full;
+
     border: none;
+    border-radius: 4px;
+
     & > :deep(.arco-card-header) {
       height: auto;
       padding: 20px;
       border: none;
     }
+
     & > :deep(.arco-card-body) {
-      padding: 0 20px 20px 20px;
+      padding: 0 20px 20px;
     }
 
     :deep(.arco-card-header-title) {
