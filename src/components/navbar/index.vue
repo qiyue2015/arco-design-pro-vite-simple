@@ -2,13 +2,8 @@
   <div class="navbar">
     <div class="left-side">
       <a-space>
-        <img
-          alt="logo"
-          src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/dfdba5317c0c20ce20e64fac803d52bc.svg~tplv-49unhts6dw-image.image"
-        />
-        <a-typography-title :style="{ margin: 0, fontSize: '18px', fontFamily: '钉钉进步体 Regular' }" :heading="5">
-          站长引擎
-        </a-typography-title>
+        <div v-if="appStore.device === 'mobile'" class="font-brand text-2xl">A9 Pro</div>
+        <div v-else class="font-brand text-2xl">{{ appStore?.app_name }}</div>
         <icon-menu-fold
           v-if="!topMenu && appStore.device === 'mobile'"
           style="font-size: 22px; cursor: pointer"
@@ -52,7 +47,7 @@
           </template>
         </a-popover>
       </li>
-      <li>
+      <li v-if="appStore.device != 'mobile'">
         <a-tooltip :content="isFullscreen ? $t('settings.navbar.screen.toExit') : $t('settings.navbar.screen.toFull')">
           <a-button class="nav-btn" type="outline" :shape="'circle'" @click="toggleFullScreen">
             <template #icon>
@@ -86,6 +81,12 @@
               </a-space>
             </a-doption>
             <a-doption>
+              <a-space @click="changePasswordShow = true">
+                <icon-lock />
+                <span> 修改密码 </span>
+              </a-space>
+            </a-doption>
+            <a-doption>
               <a-space @click="$router.push({ name: 'Info' })">
                 <icon-user />
                 <span>
@@ -113,6 +114,9 @@
         </a-dropdown>
       </li>
     </ul>
+
+    <!-- 修改密码 -->
+    <UserChangePassword v-model:visible="changePasswordShow" />
   </div>
 </template>
 
@@ -123,6 +127,7 @@
   import { useAppStore, useUserStore } from '@/store';
   import useUser from '@/hooks/user';
   import Menu from '@/components/menu/index.vue';
+  import UserChangePassword from '@/components/user/change-password.vue';
   import MessageBox from '../message-box/index.vue';
 
   const appStore = useAppStore();
@@ -171,6 +176,8 @@
     Message.success(res as string);
   };
   const toggleDrawerMenu = inject('toggleDrawerMenu') as () => void;
+
+  const changePasswordShow = ref(false);
 </script>
 
 <style scoped lang="less">
@@ -196,9 +203,11 @@
     display: flex;
     padding-right: 20px;
     list-style: none;
+
     :deep(.locale-select) {
       border-radius: 20px;
     }
+
     li {
       display: flex;
       align-items: center;
@@ -209,16 +218,19 @@
       color: var(--color-text-1);
       text-decoration: none;
     }
+
     .nav-btn {
-      border-color: rgb(var(--gray-2));
       color: rgb(var(--gray-8));
       font-size: 16px;
+      border-color: rgb(var(--gray-2));
     }
+
     .trigger-btn,
     .ref-btn {
       position: absolute;
       bottom: 14px;
     }
+
     .trigger-btn {
       margin-left: 14px;
     }
