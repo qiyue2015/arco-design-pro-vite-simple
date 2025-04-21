@@ -126,6 +126,7 @@
     z-index: 99;
     height: 100%;
     transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+
     &::after {
       position: absolute;
       top: 0;
@@ -146,6 +147,7 @@
     height: 100%;
     overflow: auto;
     overflow-x: hidden;
+
     :deep(.arco-menu) {
       ::-webkit-scrollbar {
         width: 12px;
@@ -153,14 +155,42 @@
       }
 
       ::-webkit-scrollbar-thumb {
-        border: 4px solid transparent;
-        background-clip: padding-box;
-        border-radius: 7px;
         background-color: var(--color-text-4);
+        background-clip: padding-box;
+        border: 4px solid transparent;
+        border-radius: 7px;
       }
 
       ::-webkit-scrollbar-thumb:hover {
         background-color: var(--color-text-3);
+      }
+    }
+
+    :deep(.arco-menu-vertical) {
+      .arco-menu-inner {
+        padding: 8px;
+      }
+    }
+
+    :deep(.arco-menu-collapsed) {
+      .arco-menu-inner {
+        padding: 4px;
+      }
+    }
+
+    // 左侧菜单
+    :deep(.arco-menu-light) {
+      .arco-menu-item {
+        // 定义选中状态的背景色
+        &.arco-menu-selected {
+          color: #fff;
+          background-color: rgb(var(--arcoblue-6));
+        }
+      }
+
+      // 移除 inline-header 鼠标悬停时的背景色
+      .arco-menu-inline-header:hover {
+        background-color: unset;
       }
     }
   }
