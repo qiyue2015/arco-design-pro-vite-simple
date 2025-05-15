@@ -1,5 +1,5 @@
 import localeMessageBox from '@/components/message-box/locale/zh-CN';
-import localeLogin from '@/views/login/locale/zh-CN';
+import localeLogin from '@/views/auth/locale/zh-CN';
 
 import localeSettings from './zh-CN/settings';
 
