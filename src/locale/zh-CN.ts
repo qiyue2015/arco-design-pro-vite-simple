@@ -2,6 +2,8 @@ import localeMessageBox from '@/components/message-box/locale/zh-CN';
 import localeLogin from '@/views/auth/locale/zh-CN';
 
 import localeWorkplace from '@/views/dashboard/workplace/locale/zh-CN';
+import localeUserInfo from '@/views/user/info/locale/zh-CN';
+import localeUserAuthentication from '@/views/user/authentication/locale/zh-CN';
 
 import localeSettings from './zh-CN/settings';
 
@@ -16,7 +18,7 @@ export default {
   'menu.form': '表单页',
   'menu.profile': '详情页',
   'menu.visualization': '数据可视化',
-  'menu.user': '个人中心',
+  'menu.user': '账号管理',
   'menu.arcoWebsite': 'Arco Design',
   'menu.faq': '常见问题',
   'navbar.docs': '文档中心',
@@ -26,4 +28,6 @@ export default {
   ...localeMessageBox,
   ...localeLogin,
   ...localeWorkplace,
+  ...localeUserInfo,
+  ...localeUserAuthentication,
 };
