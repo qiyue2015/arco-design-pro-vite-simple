@@ -283,13 +283,13 @@
   .control-group {
     display: flex;
     padding: 8px 12px 4px;
-    border-bottom: 1px solid var(--color-border-2);
     background-color: var(--color-fill-2);
+    border-bottom: 1px solid var(--color-border-2);
 
     :deep(.arco-color-picker) {
       width: 28px;
       height: 28px;
-      padding: 7px 7px;
+      padding: 7px;
 
       .arco-color-picker-preview {
         width: 14px;

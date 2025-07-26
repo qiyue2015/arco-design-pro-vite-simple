@@ -90,6 +90,7 @@
   .arco-popover-content {
     margin-top: 0;
   }
+
   .arco-popover-popup-content {
     padding: 6px 12px 6px 6px;
   }
@@ -99,11 +100,11 @@
   .image-view {
     display: inline-block;
     float: none;
-    line-height: 0;
-    margin: 0;
     max-width: 100%;
-    user-select: none;
+    margin: 0;
+    line-height: 0;
     vertical-align: baseline;
+    user-select: none;
 
     &--inline {
       display: inline-block;
@@ -115,24 +116,24 @@
 
     &--left {
       float: left;
-      margin-left: 0;
       margin-right: 12px;
+      margin-left: 0;
     }
 
     &--right {
       float: right;
-      margin-left: 12px;
       margin-right: 0;
+      margin-left: 12px;
     }
 
     &__body {
-      clear: both;
-      display: inline-block;
-      font-size: 0;
-      max-width: 100%;
-      transition: all 0.2s ease-in;
       position: relative;
+      display: inline-block;
+      clear: both;
+      max-width: 100%;
+      font-size: 0;
       cursor: pointer;
+      transition: all 0.2s ease-in;
     }
   }
 </style>

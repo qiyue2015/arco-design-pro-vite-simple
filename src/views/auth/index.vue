@@ -77,16 +77,17 @@
 
 <style lang="less" scoped>
   .auth-container {
-    background-image: url(assets/images/login-bg.png);
-    background-position: 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
     display: flex;
     height: 100vh;
+    background-image: url('assets/images/login-bg.png');
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: cover;
 
     .auth-title {
       @apply font-bold;
       @apply text-left;
+
       color: var(--color-text-1);
     }
 
@@ -95,11 +96,12 @@
 
       &-inner {
         @apply w-full p-6 lg:p-10;
-        background: var(--color-bg-white);
-        border-radius: 12px;
+
         max-width: 500px;
         height: 620px;
         overflow: hidden;
+        background: var(--color-bg-white);
+        border-radius: 12px;
       }
     }
 
