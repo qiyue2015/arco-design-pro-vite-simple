@@ -175,8 +175,8 @@
     padding-left: 20px;
 
     .site-name {
-      color: var(--color-text-1);
       font-size: 20px;
+      color: var(--color-text-1);
     }
   }
 
@@ -188,11 +188,9 @@
     display: flex;
     padding-right: 20px;
     list-style: none;
-
     :deep(.locale-select) {
       border-radius: 20px;
     }
-
     li {
       display: flex;
       align-items: center;
@@ -203,19 +201,16 @@
       color: var(--color-text-1);
       text-decoration: none;
     }
-
     .nav-btn {
+      border-color: rgb(var(--gray-2));
       color: rgb(var(--gray-8));
       font-size: 16px;
-      border-color: rgb(var(--gray-2));
     }
-
     .trigger-btn,
     .ref-btn {
       position: absolute;
       bottom: 14px;
     }
-
     .trigger-btn {
       margin-left: 14px;
     }

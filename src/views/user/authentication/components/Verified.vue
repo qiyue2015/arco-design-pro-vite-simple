@@ -60,8 +60,7 @@
   .basic-info {
     :deep(.arco-card-header) {
       --color-text-1: rgb(var(--success-6));
-
-      background: linear-gradient(rgb(232 255 234 / 50%), rgb(255 255 255 / 0%));
+      background: linear-gradient(rgba(232, 255, 234, 0.5), rgba(255, 255, 255, 0));
     }
   }
 </style>

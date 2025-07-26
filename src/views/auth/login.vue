@@ -30,24 +30,21 @@
 
 <style lang="less" scoped>
   .login-tab {
-    flex: 1;
-
     /* @apply mt-8 flex-1; */
     margin-top: 2rem;
+    flex: 1;
 
     :deep(.arco-tabs-nav) {
-      &::before {
+      &:before {
         display: none;
       }
     }
 
     :deep(.arco-tabs-tab) {
       margin: 0;
-
       + .arco-tabs-tab {
         margin-left: 32px;
       }
-
       &:hover {
         .arco-tabs-tab-title::before {
           background: none;

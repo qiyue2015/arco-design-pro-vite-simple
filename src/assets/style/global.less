@@ -22,29 +22,26 @@
 
 @layer components {
   .general-card {
-    border: none;
     border-radius: 4px;
-
+    border: none;
     & > .arco-card-header {
       height: auto;
       padding: 20px;
       border: none;
     }
-
     & > .arco-card-body {
-      padding: 0 20px 20px;
+      padding: 0 20px 20px 20px;
     }
   }
 
   .arco-table-cell {
     .circle {
       display: inline-block;
+      margin-right: 4px;
       width: 6px;
       height: 6px;
-      margin-right: 4px;
-      background-color: rgb(var(--blue-6));
       border-radius: 50%;
-
+      background-color: rgb(var(--blue-6));
       &.pass {
         background-color: rgb(var(--green-6));
       }
@@ -65,8 +62,13 @@
 
 @layer utilities {
   .page-container {
-    @apply container h-full p-4 flex flex-col flex-1 gap-4;
-
+    @apply container;
+    @apply h-full;
+    @apply p-4;
+    @apply flex;
+    @apply flex-col;
+    @apply flex-1;
+    @apply gap-4;
     .grid-card {
       @apply flex-1;
     }
@@ -76,15 +78,14 @@
   .font-brand {
     font-family: '钉钉进步体 Regular', sans-serif;
   }
-
   .split-line {
     border-color: rgb(var(--gray-2));
   }
 
   .text-link,
   .text-link a {
-    color: rgb(var(--link-6));
     cursor: pointer;
+    color: rgb(var(--link-6));
 
     &:hover {
       color: rgb(var(--link-5));
