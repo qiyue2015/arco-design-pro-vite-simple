@@ -85,7 +85,8 @@
     background-size: cover;
 
     .auth-title {
-      @apply text-2xl font-bold text-left;
+      @apply font-bold;
+      @apply text-left;
 
       color: var(--color-text-1);
     }
