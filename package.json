@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@arco-design/web-vue": "^2.57.0",
-    "@tiptap/core": "^3.0.7",
+    "@tiptap/core": "^3.0.9",
     "@vueuse/core": "^9.13.0",
     "axios": "^0.24.0",
     "dayjs": "^1.11.13",
@@ -97,7 +97,7 @@
     "prettier": "^2.8.8",
     "rollup": "^2.79.2",
     "rollup-plugin-visualizer": "^5.14.0",
-    "stylelint": "^16.22.0",
+    "stylelint": "^16.23.0",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-recommended-vue": "^1.6.1",
     "stylelint-config-standard": "^37.0.0",
