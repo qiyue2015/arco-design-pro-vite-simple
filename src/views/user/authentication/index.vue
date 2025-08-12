@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div class="flex flex-row h-full">
     <Verified v-if="isVerified" />
     <Unverified v-else />
   </div>
