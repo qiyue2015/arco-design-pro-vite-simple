@@ -5,7 +5,7 @@
         <a-input v-model="userInfo.email" type="email" placeholder="邮箱地址" allow-clear />
       </a-form-item>
       <a-form-item field="code" :validate-trigger="['change', 'blur']" hide-label>
-        <InputVerifyCode v-model="userInfo.code" :account="userInfo.email" type="email" />
+        <InputVerifyCode v-model="userInfo.code" :account="userInfo.email" type="email" @change="onSendVerifyCode" />
       </a-form-item>
       <a-form-item hide-label>
         <AgreementNotice type="login" />
@@ -22,6 +22,7 @@
   import { useUserStore } from '@/store';
   import { useRouter } from 'vue-router';
   import { DEFAULT_ROUTE_NAME } from '@/router/constants';
+  import { sendEmailCode } from '@/api/app';
   import { Message } from '@arco-design/web-vue';
   import InputVerifyCode from '@/components/input-verify-code/index.vue';
   import AgreementNotice from './AgreementNotice.vue';
@@ -48,6 +49,11 @@
       { required: true, message: '请输入验证码' },
       { required: true, min: 4, max: 6, message: '验证码长度在 4 到 6 个字符之间' },
     ],
+  };
+
+  // 发送验证码
+  const onSendVerifyCode = (account: string) => {
+    sendEmailCode(account);
   };
 
   const loginForm = ref();

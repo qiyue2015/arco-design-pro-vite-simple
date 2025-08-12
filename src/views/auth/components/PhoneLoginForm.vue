@@ -7,7 +7,7 @@
         </a-input>
       </a-form-item>
       <a-form-item field="code" :validate-trigger="['change', 'blur']" hide-label>
-        <InputVerifyCode v-model="userInfo.code" :account="userInfo.phone" type="phone" />
+        <InputVerifyCode v-model="userInfo.code" :account="userInfo.phone" type="phone" @change="onSendVerifyCode" />
       </a-form-item>
       <a-form-item hide-label>
         <AgreementNotice type="login" />
@@ -26,6 +26,7 @@
   import { DEFAULT_ROUTE_NAME } from '@/router/constants';
   import { Message } from '@arco-design/web-vue';
   import InputVerifyCode from '@/components/input-verify-code/index.vue';
+  import { sendPhoneCode } from '@/api/app';
   import AgreementNotice from './AgreementNotice.vue';
 
   const { t } = useI18n();
@@ -58,6 +59,11 @@
       { required: true, message: '请输入验证码' },
       { required: true, min: 4, max: 6, message: '验证码长度在 4 到 6 个字符之间' },
     ],
+  };
+
+  // 发送验证码
+  const onSendVerifyCode = (phone: string) => {
+    sendPhoneCode(phone);
   };
 
   const loginForm = ref();
