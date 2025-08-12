@@ -3,7 +3,7 @@
     <a-row justify="space-between" align="center">
       <a-space size="medium" fill>
         <slot name="prepend" />
-        <a-button v-if="hasCreate" type="primary" @click="onCreate">新增</a-button>
+        <a-button v-if="hasCreate" class="min-w-24" type="primary" @click="onCreate">新增</a-button>
         <slot name="append" />
       </a-space>
       <a-space size="medium" fill>
