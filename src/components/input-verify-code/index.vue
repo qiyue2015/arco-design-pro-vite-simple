@@ -18,6 +18,8 @@
     account: string;
   }>();
 
+  const emits = defineEmits(['change']);
+
   const sending = ref(false);
   const countdown = ref(60);
   const interval = ref<ReturnType<typeof setInterval> | null>(null);
@@ -57,12 +59,15 @@
       return;
     }
 
+    emits('change', props.account);
+
     sending.value = true;
     countdown.value = 60;
 
     if (interval.value) {
       clearInterval(interval.value);
     }
+
     interval.value = setInterval(() => {
       if (countdown.value > 0) {
         countdown.value -= 1;

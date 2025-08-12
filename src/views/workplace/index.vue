@@ -4,11 +4,18 @@
       <!-- 工具条 -->
       <GridToolbar @refresh="onRefresh">
         <template #prepend>
-          <a-button type="primary" @click="onImport">导入工作流</a-button>
-          <a-upload action="/" :limit="1">
-            <template #upload-button> 导入工作流 </template>
+          <a-upload :action="action" :limit="1" accept="application/json" @before-upload="onImport">
+            <template #upload-button>
+              <a-button :loading="importLoading" type="primary">
+                <template #icon><icon-paste /></template>
+                导入工作流
+              </a-button>
+            </template>
           </a-upload>
-          <a-button type="primary" @click="onCreate">新建工作流</a-button>
+          <a-button :loading="createLoading" type="primary" @click="onCreate">
+            <template #icon><icon-plus /></template>
+            新建工作流
+          </a-button>
         </template>
       </GridToolbar>
 
@@ -26,16 +33,12 @@
         <template #name="{ record }">
           <a-link @click="onOpenWorkflow(record)">{{ record.name }}</a-link>
         </template>
-        <template #status="{ record }">
-          <a-badge v-if="record.status === 'online'" status="normal" text="下线" />
-          <a-badge v-if="record.status === 'offline'" status="success" text="上线" />
-        </template>
         <template #operate="{ record }">
           <a-space fill>
-            <a-button type="text" @click="onRename(record)">重命名</a-button>
-            <a-button type="text" @click="onCopy(record)">复制</a-button>
-            <a-button type="text" @click="onDownload(record)">下载</a-button>
-            <a-button type="text" @click="onDelete(record)">删除</a-button>
+            <a-link @click="onRename(record)">重命名</a-link>
+            <a-link @click="onCopy(record)">复制</a-link>
+            <a-link @click="onDownload(record)">下载</a-link>
+            <a-link status="danger" @click="onDelete(record)">删除</a-link>
           </a-space>
         </template>
       </GridTable>
@@ -46,22 +49,26 @@
 <script lang="ts" setup>
   import { ref, onMounted, computed, reactive } from 'vue';
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
-  import { PaginationProps } from '@arco-design/web-vue';
+  import { Message, PaginationProps } from '@arco-design/web-vue';
   import { useLoading } from '@/hooks';
-  import { WorkflowParams, WorkflowRecord, queryWorkflowList, deleteWorkflow } from '@/api/workflow';
+  import { WorkflowParams, WorkflowRecord, queryWorkflowList, deleteWorkflow, postWorkflow } from '@/api/workflow';
+
+  const action = '/api/user/workflow';
 
   const tableColumns = computed<TableColumnData[]>(() => [
     { title: '工作流名称', slotName: 'name', width: 500 },
-    { title: '状态', slotName: 'status', width: 120 },
     { title: '最后更新', dataIndex: 'updated_at', width: 180 },
-    { title: '操作', slotName: 'operate', width: 180 },
+    { title: '操作', slotName: 'operate', width: 220, fixed: 'right' },
   ]);
 
   const { loading, setLoading } = useLoading(false);
   const renderData = ref<WorkflowRecord[]>([]);
-  const basePagination = { current: 1, pageSize: 10 };
+  const basePagination = { current: 1, pageSize: 20 };
   const pagination = reactive<PaginationProps>({ ...basePagination, showPageSize: true, showTotal: true });
   const queryParams = reactive<WorkflowParams>({ ...basePagination });
+
+  const importLoading = ref(false);
+  const createLoading = ref(false);
 
   const fetchData = async (params = queryParams) => {
     try {
@@ -98,39 +105,104 @@
     fetchData();
   };
 
-  // 导入
-  const onImport = () => {
-    //
+  // 打开工作流
+  const onOpenWorkflow = (item: WorkflowRecord) => {
+    window.open(`/workflows/${item.id}`, '_blank');
   };
 
-  const onCreate = () => {
-    //
+  const onCreate = async () => {
+    try {
+      createLoading.value = true;
+      const uuid = URL.createObjectURL(new Blob()).split('/').pop();
+      const { data } = await postWorkflow({
+        name: '空白工作流',
+        content: `{"id":"${uuid}","revision":0,"last_node_id":0,"last_link_id":0,"nodes":[],"links":[],"groups":[],"config":{},"extra":{"links_added_by_ue":[],"ue_links":[],"0246.VERSION":[0,0,4],"ds":{"scale":1,"offset":[0.08203125,0.0390625]},"frontendVersion":"1.23.0","VHS_latentpreview":false,"VHS_latentpreviewrate":0,"VHS_MetadataImage":true,"VHS_KeepIntermediate":true},"version":0.4}`,
+      });
+      Message.success({
+        content: '工作流已创建，您可立即开始编辑！',
+        duration: 1200,
+        onClose: () => {
+          onRefresh();
+          onOpenWorkflow(data);
+        },
+      });
+    } finally {
+      createLoading.value = false;
+    }
+  };
+
+  const onImport = (file: File) => {
+    importLoading.value = true;
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = async () => {
+      try {
+        const name = file.name.replace(/\.[^/.]+$/, '');
+        const content = reader.result as string;
+        const postData = { name, content };
+        const { data } = await postWorkflow(postData);
+        Message.success({
+          content: '导入成功，即将为您打开工作流。',
+          duration: 1200,
+          onClose: () => {
+            onRefresh();
+            onOpenWorkflow(data);
+          },
+        });
+      } finally {
+        importLoading.value = false;
+      }
+    };
+    reader.onerror = () => {
+      importLoading.value = false;
+    };
   };
 
   const onRename = (item: WorkflowRecord) => {
     console.log('重命名', item);
   };
 
-  const onCopy = (item: WorkflowRecord) => {
-    console.log('复制', item);
+  const onCopy = async (item: WorkflowRecord) => {
+    try {
+      setLoading(true);
+      const name = `${item.name} - 副本`;
+      const content = JSON.stringify(item.content);
+      const { data } = await postWorkflow({ name, content });
+      Message.success({
+        content: '工作流副本已创建，您可立即开始编辑！',
+        duration: 1200,
+        onClose: () => {
+          onRefresh();
+          onOpenWorkflow(data);
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onDownload = (item: WorkflowRecord) => {
-    console.log('下载', item);
+    const content = JSON.stringify(item.content);
+    const blob = new Blob([content], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${item.name}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   // 删除
   const onDelete = async (item: WorkflowRecord) => {
     setLoading(true);
     await deleteWorkflow(item.id);
+    Message.success({
+      content: '工作流已删除，如有误可联系管理员恢复。',
+      duration: 1200,
+    });
     onRefresh();
-  };
-
-  // 打开工作流
-  const onOpenWorkflow = (item: WorkflowRecord) => {
-    console.log('打开', item);
-    // 新窗口打开
-    window.open(`/workflows/${item.id}`, '_blank');
   };
 
   onMounted(() => {
@@ -139,7 +211,5 @@
 </script>
 
 <style lang="less" scoped>
-  .container {
-    padding: 20px;
-  }
+  //
 </style>

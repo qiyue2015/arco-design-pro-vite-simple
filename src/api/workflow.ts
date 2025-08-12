@@ -3,10 +3,9 @@ import axios from 'axios';
 import qs from 'query-string';
 
 export interface WorkflowRecord {
-  id: number;
-  title: string;
-  description: string;
-  thumb: string;
+  id: string;
+  name: string;
+  content: string;
 }
 
 export interface WorkflowParams extends Partial<WorkflowRecord> {
@@ -35,17 +34,17 @@ export function postWorkflow(data: AnyObject) {
 }
 
 // 删除
-export function deleteWorkflow(id: number) {
+export function deleteWorkflow(id: string) {
   return axios.delete(`/api/user/workflows/${id}`);
 }
 
 // 修改
-export function putWorkflow(id: number, data: AnyObject) {
+export function putWorkflow(id: string, data: AnyObject) {
   return axios.put(`/api/user/workflows/${id}`, data);
 }
 
 // 详情
-export function getWorkflowDetail(id: number) {
+export function getWorkflowDetail(id: string) {
   return axios.get(`/api/user/workflows/${id}`, {
     params: { id },
   });
