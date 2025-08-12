@@ -10,7 +10,7 @@
       <a-form-item hide-label>
         <AgreementNotice type="login" />
       </a-form-item>
-      <a-button type="primary" size="large" html-type="submit" long :loading="loading"> 登录 </a-button>
+      <a-button type="primary" size="large" html-type="submit" long :loading="loading"> 登录 / 注册 </a-button>
     </a-form>
   </div>
 </template>
@@ -32,8 +32,8 @@
   const router = useRouter();
 
   const userInfo = reactive({
-    email: 'fengqiyue@gmail.com',
-    code: '1234',
+    email: '',
+    code: '',
   });
 
   const rules = {

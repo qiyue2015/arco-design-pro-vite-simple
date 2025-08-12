@@ -34,8 +34,8 @@
   const router = useRouter();
 
   const userInfo = reactive({
-    phone: '13888888888',
-    code: '1234',
+    phone: '',
+    code: '',
   });
 
   const rules = {

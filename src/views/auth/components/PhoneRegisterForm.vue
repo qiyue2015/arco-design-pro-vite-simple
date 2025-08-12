@@ -37,9 +37,9 @@
   const agreed = ref(false);
 
   const userInfo = reactive({
-    phone: '13888888888',
-    code: '123456',
-    invite_code: 'ABC123',
+    phone: '',
+    code: '',
+    invite_code: '',
   });
 
   const rules = {

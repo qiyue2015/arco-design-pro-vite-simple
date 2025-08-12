@@ -79,8 +79,8 @@ const useUserStore = defineStore('user', {
     // Register
     async register(registerForm: RegisterData) {
       try {
-        const res = await userRegister(registerForm);
-        setToken(res.data.token);
+        const { data } = await userRegister(registerForm);
+        setToken(data.token);
       } catch (err) {
         clearToken();
         throw err;

@@ -5,17 +5,17 @@
     </div>
     <div class="content">
       <div class="content-inner flex flex-col">
-        <div class="auth-title font-brand">欢迎使用 {{ appStore?.app_name }}</div>
+        <div class="auth-title text-2xl font-brand">欢迎使用 {{ appStore?.app_name }}</div>
         <!-- 登录 -->
         <template v-if="$route.name === 'login'">
           <Login v-model:login-type="loginType" />
           <div class="text-center text-sm">
-            <a-divider> 其他登录方式 </a-divider>
-            <a-space size="large" class="mt-4">
+            <!-- <a-divider> 其他登录方式 </a-divider> -->
+            <!-- <a-space size="large" class="mt-4">
               <icon-wechat size="32px" style="color: #1aad19" />
               <icon-google size="28px" style="color: #4285f4" />
               <icon-github size="26px" />
-            </a-space>
+            </a-space> -->
             <div v-if="loginType === 'password'" class="mt-10">
               没有账号？ <a-link class="text-sm" @click="onRegister">现在就注册</a-link>
             </div>
@@ -85,9 +85,6 @@
     background-size: cover;
 
     .auth-title {
-      @apply font-bold;
-      @apply text-left;
-
       color: var(--color-text-1);
     }
 
@@ -98,9 +95,9 @@
         @apply w-full p-6 lg:p-10;
 
         max-width: 500px;
-        height: 620px;
+        height: 590px;
         overflow: hidden;
-        background: var(--color-bg-white);
+        background: var(--color-bg-4);
         border-radius: 12px;
       }
     }
@@ -132,8 +129,8 @@
   }
 
   body[arco-theme='dark'] {
-    .login-container {
-      background: var(--color-fill-2);
+    .auth-container {
+      background: var(--color-bg-1);
     }
   }
 </style>

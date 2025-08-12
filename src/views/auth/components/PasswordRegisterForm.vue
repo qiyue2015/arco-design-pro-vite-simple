@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
-    <a-form ref="loginForm" :model="userInfo" :rules="rules" layout="vertical" size="large" @submit-success="handleSubmit">
-      <a-form-item field="username" :validate-trigger="['change', 'blur']" hide-label>
-        <a-input v-model="userInfo.username" placeholder="请设置用户名，5-20个字符" allow-clear />
+    <a-form ref="registerForm" :model="userInfo" :rules="rules" layout="vertical" size="large" @submit-success="handleSubmit">
+      <a-form-item field="account" :validate-trigger="['change', 'blur']" hide-label>
+        <a-input v-model="userInfo.account" placeholder="请设置用户名，5-20个字符" allow-clear />
       </a-form-item>
       <a-form-item field="password" :validate-trigger="['change', 'blur']" hide-label>
         <a-input v-model="userInfo.password" type="password" placeholder="请设置登录密码" allow-clear />
@@ -44,15 +44,15 @@
   const agreed = ref(false);
 
   const userInfo = reactive({
-    username: 'admin',
-    password: 'admin',
-    phone: '13888888888',
-    code: '123456',
-    invite_code: 'ABC123',
+    account: '',
+    password: '',
+    phone: '',
+    code: '',
+    invite_code: '',
   });
 
   const rules = {
-    username: [
+    account: [
       { required: true, message: '请输入账号名称' },
       { min: 3, max: 20, message: '账号名称长度在 3 到 20 个字符之间' },
     ],
@@ -71,7 +71,7 @@
   };
 
   const { loading, setLoading } = useLoading();
-  const loginForm = ref();
+  const registerForm = ref();
   const handleSubmit = async (values: Record<string, any>) => {
     try {
       setLoading(true);
@@ -83,7 +83,7 @@
       });
       Message.success(t('login.form.register.success'));
     } catch (err) {
-      loginForm.value.setFields({
+      registerForm.value.setFields({
         password: {
           status: 'error',
           message: (err as Error).message,
