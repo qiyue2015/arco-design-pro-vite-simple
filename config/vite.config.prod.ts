@@ -8,12 +8,8 @@ import configImageminPlugin from './plugin/imagemin';
 export default mergeConfig(
   {
     mode: 'production',
-    plugins: [
-      configCompressPlugin('gzip'),
-      configVisualizerPlugin(),
-      configArcoResolverPlugin(),
-      configImageminPlugin(),
-    ],
+    base: 'https://mp-img1.wifixc.com/comfyui-ai/',
+    plugins: [configCompressPlugin('gzip'), configVisualizerPlugin(), configArcoResolverPlugin(), configImageminPlugin()],
     build: {
       rollupOptions: {
         output: {
