@@ -1,5 +1,5 @@
 <template>
-  <div class="container h-full">
+  <div class="page-container">
     <Grid title="我的工作流">
       <!-- 工具条 -->
       <GridToolbar @refresh="onRefresh">
@@ -38,7 +38,9 @@
             <a-link @click="onRename(record)">重命名</a-link>
             <a-link @click="onCopy(record)">复制</a-link>
             <a-link @click="onDownload(record)">下载</a-link>
-            <a-link status="danger" @click="onDelete(record)">删除</a-link>
+            <a-popconfirm content="确认删除此工作流？删除后不可恢复！" position="left" @ok="onDelete(record)">
+              <a-link status="danger">删除</a-link>
+            </a-popconfirm>
           </a-space>
         </template>
       </GridTable>
@@ -199,7 +201,7 @@
     setLoading(true);
     await deleteWorkflow(item.id);
     Message.success({
-      content: '工作流已删除，如有误可联系管理员恢复。',
+      content: '工作流已删除',
       duration: 1200,
     });
     onRefresh();
