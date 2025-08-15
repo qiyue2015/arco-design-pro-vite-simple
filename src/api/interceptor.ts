@@ -50,10 +50,6 @@ axios.interceptors.response.use(
     const res = response.data;
     // if the custom code is not 0, it is judged as an error.
     if (res.code !== 0) {
-      Message.error({
-        content: res.message || 'Error',
-        duration: 5 * 1000,
-      });
       if (res.code === -1 && response.config.url !== '/api/user/profile') {
         Modal.error({
           title: 'Confirm logout',
@@ -64,13 +60,17 @@ axios.interceptors.response.use(
             window.location.reload();
           },
         });
+      } else {
+        Message.error({
+          content: res.message || 'Error',
+          duration: 5 * 1000,
+        });
       }
       return Promise.reject(new Error(res.message || 'Error'));
     }
     return res;
   },
   (error) => {
-    console.error('这是什么情况'); // for debug
     Message.error({
       content: error.message || 'Request Error',
       duration: 5 * 1000,
