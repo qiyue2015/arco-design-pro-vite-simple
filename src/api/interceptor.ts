@@ -55,16 +55,14 @@ axios.interceptors.response.use(
         duration: 5 * 1000,
       });
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === -1 && response.config.url !== '/api/user/info') {
+      if (res.code === -1 && response.config.url !== '/api/user/profile') {
         Modal.error({
           title: 'Confirm logout',
           content: 'You have been logged out, you can cancel to stay on this page, or log in again',
           okText: 'Re-Login',
           async onOk() {
-            const userStore = useUserStore();
-
-            await userStore.logout();
-            window.location.reload();
+            await useUserStore().logout();
+            // window.location.reload();
           },
         });
       }
