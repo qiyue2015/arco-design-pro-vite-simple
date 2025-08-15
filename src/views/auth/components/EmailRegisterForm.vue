@@ -1,11 +1,11 @@
 <template>
   <div class="login-container">
-    <a-form ref="registerForm" :model="userInfo" :rules="rules" layout="vertical" size="large" @submit-success="handleSubmit">
-      <a-form-item field="name" :validate-trigger="['change', 'blur']" hide-label>
-        <a-input v-model="userInfo.name" placeholder="请设置用户名，5-20个字符" allow-clear />
+    <a-form ref="loginForm" :model="userInfo" :rules="rules" layout="vertical" size="large" @submit-success="handleSubmit">
+      <a-form-item field="email" :validate-trigger="['change', 'blur']" hide-label>
+        <a-input v-model="userInfo.email" type="email" placeholder="请输入邮箱地址" allow-clear />
       </a-form-item>
-      <a-form-item field="password" :validate-trigger="['change', 'blur']" hide-label>
-        <a-input v-model="userInfo.password" type="password" placeholder="请设置登录密码" allow-clear />
+      <a-form-item field="code" :validate-trigger="['change', 'blur']" hide-label>
+        <InputVerifyCode v-model="userInfo.code" :account="userInfo.email" type="email" @change="onSendVerifyCode" />
       </a-form-item>
       <a-form-item field="invite_code" :validate-trigger="['change', 'blur']" hide-label>
         <a-input v-model="userInfo.invite_code" placeholder="邀请码（可注册后补填）" allow-clear />
@@ -26,39 +26,39 @@
   import { useRouter } from 'vue-router';
   import { Message } from '@arco-design/web-vue';
   import { DEFAULT_ROUTE_NAME } from '@/router/constants';
+  import { sendEmailCode } from '@/api/app';
+  import InputVerifyCode from '@/components/input-verify-code/index.vue';
   import AgreementNotice from './AgreementNotice.vue';
 
   const { t } = useI18n();
   const userStore = useUserStore();
   const router = useRouter();
-
   const agreed = ref(false);
 
   const userInfo = reactive({
-    type: 'account',
-    name: '',
-    password: '',
+    type: 'email',
+    email: '',
+    code: '',
     invite_code: '',
   });
 
   const rules = {
-    name: [
-      { required: true, message: '请输入账号名称' },
-      { min: 3, max: 20, message: '账号名称长度在 3 到 20 个字符之间' },
+    email: [
+      { required: true, message: '请输入邮箱地址' },
+      { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的邮箱地址' },
     ],
-    password: [
-      { required: true, message: '请输入登录密码' },
-      { min: 6, max: 20, message: '密码长度在 6 到 20 个字符之间' },
+    code: [
+      { required: true, message: '请输入验证码' },
+      { len: 6, message: '验证码长度为6位' },
     ],
   };
 
   const { loading, setLoading } = useLoading();
-  const registerForm = ref();
+  const loginForm = ref();
   const handleSubmit = async (values: Record<string, any>) => {
     try {
       setLoading(true);
-      values.password_confirmation = values.password;
-      await userStore.register(values as any);
+      await userStore.login(values as any, 'email');
       const { redirect, ...othersQuery } = router.currentRoute.value.query;
       router.push({
         name: (redirect as string) || DEFAULT_ROUTE_NAME,
@@ -66,7 +66,7 @@
       });
       Message.success(t('login.form.register.success'));
     } catch (err) {
-      registerForm.value.setFields({
+      loginForm.value.setFields({
         password: {
           status: 'error',
           message: (err as Error).message,
@@ -75,6 +75,10 @@
     } finally {
       setLoading(false);
     }
+  };
+
+  const onSendVerifyCode = (account: string) => {
+    sendEmailCode(account);
   };
 </script>
 

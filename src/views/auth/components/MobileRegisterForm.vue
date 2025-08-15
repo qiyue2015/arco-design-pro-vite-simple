@@ -9,10 +9,13 @@
       <a-form-item field="code" :validate-trigger="['change', 'blur']" hide-label>
         <InputVerifyCode v-model="userInfo.code" :account="userInfo.mobile" type="mobile" @change="onSendVerifyCode" />
       </a-form-item>
-      <a-form-item hide-label>
-        <AgreementNotice type="login" />
+      <a-form-item field="invite_code" :validate-trigger="['change', 'blur']" hide-label>
+        <a-input v-model="userInfo.invite_code" placeholder="邀请码（可注册后补填）" allow-clear />
       </a-form-item>
-      <a-button type="primary" size="large" html-type="submit" long :loading="loading"> 登录 / 注册 </a-button>
+      <a-form-item hide-label>
+        <AgreementNotice v-model="agreed" type="register" />
+      </a-form-item>
+      <a-button type="primary" size="large" html-type="submit" long :loading="loading" :disabled="!agreed"> 开始体验 </a-button>
     </a-form>
   </div>
 </template>
@@ -23,41 +26,32 @@
   import { useLoading } from '@/hooks';
   import { useUserStore } from '@/store';
   import { useRouter } from 'vue-router';
-  import { DEFAULT_ROUTE_NAME } from '@/router/constants';
   import { Message } from '@arco-design/web-vue';
-  import InputVerifyCode from '@/components/input-verify-code/index.vue';
+  import { DEFAULT_ROUTE_NAME } from '@/router/constants';
   import { sendMobileCode } from '@/api/app';
+  import InputVerifyCode from '@/components/input-verify-code/index.vue';
   import AgreementNotice from './AgreementNotice.vue';
 
   const { t } = useI18n();
-  const { loading, setLoading } = useLoading();
   const userStore = useUserStore();
   const router = useRouter();
+  const agreed = ref(false);
 
   const userInfo = reactive({
+    type: 'mobile',
     mobile: '',
     code: '',
+    invite_code: '',
   });
 
   const rules = {
     mobile: [
       { required: true, message: '请输入手机号' },
-      {
-        required: true,
-        validator: (value: string, cb: (arg: string) => void) => {
-          return new Promise<void>((resolve) => {
-            if (!/^1[3-9]\d{9}$/.test(value)) {
-              cb('输入值不是有效电话号码');
-            } else {
-              resolve();
-            }
-          });
-        },
-      },
+      { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号' },
     ],
     code: [
       { required: true, message: '请输入验证码' },
-      { required: true, min: 4, max: 6, message: '验证码长度在 4 到 6 个字符之间' },
+      { len: 6, message: '验证码长度为6位' },
     ],
   };
 
@@ -66,6 +60,7 @@
     sendMobileCode(mobile);
   };
 
+  const { loading, setLoading } = useLoading();
   const loginForm = ref();
   const handleSubmit = async (values: Record<string, any>) => {
     try {
@@ -76,7 +71,7 @@
         name: (redirect as string) || DEFAULT_ROUTE_NAME,
         query: { ...othersQuery },
       });
-      Message.success(t('login.form.login.success'));
+      Message.success(t('login.form.register.success'));
     } catch (err) {
       loginForm.value.setFields({
         password: {

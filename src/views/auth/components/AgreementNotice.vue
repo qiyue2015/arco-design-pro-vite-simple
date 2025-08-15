@@ -1,7 +1,7 @@
 <template>
   <div class="text-sm">
     <template v-if="attrs.type === 'register'">
-      <a-space size="mini" fill>
+      <a-space size="mini" wrap fill>
         <a-checkbox v-bind="{ ...attrs }" class="text-sm">点击开始体验代表已阅读并同意</a-checkbox>
         <a href="https://ulohymfy1t.feishu.cn/docx/MtBfdh5CIowwZfxW2ORcHeoanTl" class="text-link" target="_blank">
           《服务协议》
