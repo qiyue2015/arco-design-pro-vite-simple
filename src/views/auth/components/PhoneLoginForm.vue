@@ -1,13 +1,13 @@
 <template>
   <div class="login-container">
     <a-form ref="loginForm" :model="userInfo" :rules="rules" layout="vertical" size="large" @submit-success="handleSubmit">
-      <a-form-item field="phone" :validate-trigger="['change', 'blur']" hide-label>
-        <a-input v-model="userInfo.phone" placeholder="请输入手机号" allow-clear>
+      <a-form-item field="mobile" :validate-trigger="['change', 'blur']" hide-label>
+        <a-input v-model="userInfo.mobile" placeholder="请输入手机号" allow-clear>
           <template #prefix> +86 </template>
         </a-input>
       </a-form-item>
       <a-form-item field="code" :validate-trigger="['change', 'blur']" hide-label>
-        <InputVerifyCode v-model="userInfo.code" :account="userInfo.phone" type="phone" @change="onSendVerifyCode" />
+        <InputVerifyCode v-model="userInfo.code" :account="userInfo.mobile" type="mobile" @change="onSendVerifyCode" />
       </a-form-item>
       <a-form-item hide-label>
         <AgreementNotice type="login" />
@@ -26,7 +26,7 @@
   import { DEFAULT_ROUTE_NAME } from '@/router/constants';
   import { Message } from '@arco-design/web-vue';
   import InputVerifyCode from '@/components/input-verify-code/index.vue';
-  import { sendPhoneCode } from '@/api/app';
+  import { sendMobileCode } from '@/api/app';
   import AgreementNotice from './AgreementNotice.vue';
 
   const { t } = useI18n();
@@ -35,12 +35,12 @@
   const router = useRouter();
 
   const userInfo = reactive({
-    phone: '',
+    mobile: '',
     code: '',
   });
 
   const rules = {
-    phone: [
+    mobile: [
       { required: true, message: '请输入手机号' },
       {
         required: true,
@@ -62,15 +62,15 @@
   };
 
   // 发送验证码
-  const onSendVerifyCode = (phone: string) => {
-    sendPhoneCode(phone);
+  const onSendVerifyCode = (mobile: string) => {
+    sendMobileCode(mobile);
   };
 
   const loginForm = ref();
   const handleSubmit = async (values: Record<string, any>) => {
     try {
       setLoading(true);
-      await userStore.login(values as any);
+      await userStore.login(values as any, 'mobile');
       const { redirect, ...othersQuery } = router.currentRoute.value.query;
       router.push({
         name: (redirect as string) || DEFAULT_ROUTE_NAME,

@@ -54,15 +54,14 @@ axios.interceptors.response.use(
         content: res.message || 'Error',
         duration: 5 * 1000,
       });
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === -1 && response.config.url !== '/api/user/profile') {
+      if (res.code === -1 && response.config.url !== '/api/user/profile' && response.config.url !== '/api/auth/logout') {
         Modal.error({
           title: 'Confirm logout',
           content: 'You have been logged out, you can cancel to stay on this page, or log in again',
           okText: 'Re-Login',
           async onOk() {
-            await useUserStore().logout();
-            // window.location.reload();
+            useUserStore().logoutCallBack();
+            window.location.reload();
           },
         });
       }
@@ -71,6 +70,7 @@ axios.interceptors.response.use(
     return res;
   },
   (error) => {
+    console.error('这是什么情况'); // for debug
     Message.error({
       content: error.message || 'Request Error',
       duration: 5 * 1000,

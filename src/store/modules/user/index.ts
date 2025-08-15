@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia';
+import { getUserInfo } from '@/api/user';
 import {
-  login as userLogin,
+  loginByAccount,
+  loginByEmail,
+  loginByMobile,
+  RegisterData,
   logout as userLogout,
   register as userRegister,
-  getUserInfo,
-  LoginData,
-  RegisterData,
-} from '@/api/user';
+} from '@/api/auth';
 import { setToken, clearToken } from '@/utils/auth';
 import { removeRouteListener } from '@/utils/route-listener';
 import { UserState } from './types';
@@ -67,10 +68,18 @@ const useUserStore = defineStore('user', {
     },
 
     // Login
-    async login(loginForm: LoginData) {
+    async login(loginForm: any, type: string) {
       try {
-        const res = await userLogin(loginForm);
-        setToken(res.data.token);
+        if (type === 'account') {
+          const res = await loginByAccount(loginForm);
+          setToken(res.data.token);
+        } else if (type === 'mobile') {
+          const res = await loginByMobile(loginForm);
+          setToken(res.data.token);
+        } else if (type === 'email') {
+          const res = await loginByEmail(loginForm);
+          setToken(res.data.token);
+        }
       } catch (err) {
         clearToken();
         throw err;

@@ -53,7 +53,7 @@
   const handleSubmit = async (values: Record<string, any>) => {
     try {
       setLoading(true);
-      await userStore.login(values as any);
+      await userStore.login(values as any, 'account');
       const { redirect, ...othersQuery } = router.currentRoute.value.query;
       router.push({
         name: (redirect as string) || DEFAULT_ROUTE_NAME,
