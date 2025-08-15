@@ -54,7 +54,7 @@ axios.interceptors.response.use(
         content: res.message || 'Error',
         duration: 5 * 1000,
       });
-      if (res.code === -1 && response.config.url !== '/api/user/profile' && response.config.url !== '/api/auth/logout') {
+      if (res.code === -1 && response.config.url !== '/api/user/profile') {
         Modal.error({
           title: 'Confirm logout',
           content: 'You have been logged out, you can cancel to stay on this page, or log in again',
