@@ -14,7 +14,7 @@
   const attrs = useAttrs();
 
   const props = defineProps<{
-    type: 'phone' | 'email';
+    type: 'mobile' | 'email';
     account: string;
   }>();
 
@@ -24,8 +24,8 @@
   const countdown = ref(60);
   const interval = ref<ReturnType<typeof setInterval> | null>(null);
 
-  const isValidPhone = (phone: string) => {
-    return /^1[3-9]\d{9}$/.test(phone);
+  const isValidMobile = (mobile: string) => {
+    return /^1[3-9]\d{9}$/.test(mobile);
   };
 
   const isValidEmail = (email: string) => {
@@ -33,8 +33,8 @@
   };
 
   const canSendVerifyCode = computed(() => {
-    if (props.type === 'phone') {
-      return !sending.value && isValidPhone(props.account);
+    if (props.type === 'mobile') {
+      return !sending.value && isValidMobile(props.account);
     }
     if (props.type === 'email') {
       return !sending.value && isValidEmail(props.account);
@@ -44,10 +44,10 @@
 
   const handleSendVerifyCode = () => {
     if (!props.account) {
-      Message.error(props.type === 'phone' ? '请先输入手机号' : '请先输入邮箱');
+      Message.error(props.type === 'mobile' ? '请先输入手机号' : '请先输入邮箱');
       return;
     }
-    if (props.type === 'phone' && !isValidPhone(props.account)) {
+    if (props.type === 'mobile' && !isValidMobile(props.account)) {
       Message.error('请输入正确的手机号');
       return;
     }
