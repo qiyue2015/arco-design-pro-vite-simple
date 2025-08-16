@@ -48,7 +48,7 @@
   const data = reactive([
     {
       id: '77d5b61e-a98a-5754-b7b5-4f1df0ff9cf9',
-      type: '企业认证',
+      type: '个人认证',
       created_at: '2023-10-01 12:00:00',
       completed_at: '2023-10-02 12:00:00',
       status: 'verified',
@@ -60,7 +60,16 @@
   .basic-info {
     :deep(.arco-card-header) {
       --color-text-1: rgb(var(--success-6));
-      background: linear-gradient(rgba(232, 255, 234, 0.5), rgba(255, 255, 255, 0));
+
+      background: linear-gradient(rgb(232 255 234 / 50%), rgb(255 255 255 / 0%));
+    }
+  }
+
+  body[arco-theme='dark'] {
+    .basic-info {
+      :deep(.arco-card-header) {
+        background: transparent;
+      }
     }
   }
 </style>

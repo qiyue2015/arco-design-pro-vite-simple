@@ -48,3 +48,15 @@ export function loginByEmail(data: EmailLoginData) {
 export function logout() {
   return axios.post<LoginRes>('/api/auth/logout');
 }
+
+export function setPassword(data: { name: string; password: string; password_confirmation: string }) {
+  return axios.post('/api/auth/set-password', data);
+}
+
+export function changePassword(data: { current_password: string; password: string; password_confirmation: string }) {
+  return axios.post('/api/auth/change-password', data);
+}
+
+export function bindMobile(data: { mobile: string; code: string }) {
+  return axios.post('/api/auth/bind/mobile', data);
+}

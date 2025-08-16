@@ -13,11 +13,15 @@
 
   const attrs = useAttrs();
 
-  const props = defineProps<{
-    type: 'mobile' | 'email';
-    account: string;
-  }>();
-
+  const props = withDefaults(
+    defineProps<{
+      type?: 'mobile' | 'email';
+      account: string | undefined | null;
+    }>(),
+    {
+      type: 'mobile',
+    }
+  );
   const emits = defineEmits(['change']);
 
   const sending = ref(false);
@@ -25,18 +29,24 @@
   const interval = ref<ReturnType<typeof setInterval> | null>(null);
 
   const isValidMobile = (mobile: string) => {
-    return /^1[3-9]\d{9}$/.test(mobile);
+    if (mobile) {
+      return /^1[3-9]\d{9}$/.test(mobile);
+    }
+    return false;
   };
 
   const isValidEmail = (email: string) => {
-    return /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(email);
+    if (email) {
+      return /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(email);
+    }
+    return false;
   };
 
   const canSendVerifyCode = computed(() => {
-    if (props.type === 'mobile') {
+    if (props.type === 'mobile' && props.account) {
       return !sending.value && isValidMobile(props.account);
     }
-    if (props.type === 'email') {
+    if (props.type === 'email' && props.account) {
       return !sending.value && isValidEmail(props.account);
     }
     return false;

@@ -11,5 +11,4 @@ export interface UserState {
   mobile_verified: boolean;
   role: RoleType;
   identity_verified: boolean;
-  is_password_set: boolean;
 }

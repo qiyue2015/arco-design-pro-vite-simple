@@ -32,8 +32,6 @@ const USER: AppRouteRecordRaw = {
         requiresAuth: true,
         icon: 'icon-idcard',
         roles: ['user'],
-        hideInMenu: true,
-        activeMenu: 'UserInfo',
       },
     },
   ],

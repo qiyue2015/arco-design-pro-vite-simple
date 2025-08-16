@@ -23,20 +23,20 @@
         </a-upload>
       </div>
       <div class="flex-1">
-        <a-descriptions :column="1" class="pt-[8px]">
+        <a-descriptions :column="1" :align="{ label: 'right' }" class="pt-[8px]">
+          <a-descriptions-item label="账号">
+            <a-typography-paragraph class="!m-0" copyable> {{ userInfo.name }} </a-typography-paragraph>
+          </a-descriptions-item>
           <a-descriptions-item label="昵称">
             {{ userInfo.nickname || '未设定昵称' }}
           </a-descriptions-item>
-          <a-descriptions-item label="个人签名">
-            {{ userInfo.introduce || '未设定签名' }}
-          </a-descriptions-item>
-          <a-descriptions-item label="账号ID">
-            <a-typography-paragraph class="!m-0" copyable> {{ userInfo.id }} </a-typography-paragraph>
+          <a-descriptions-item label="签名">
+            {{ userInfo.introduction || '未设定签名' }}
           </a-descriptions-item>
         </a-descriptions>
       </div>
-      <a-button type="primary" @click="$router.push({ name: 'Authentication' })">实名认证</a-button>
-      <a-button type="outline" @click="onEditAccountInfo">编辑资料</a-button>
+      <a-button type="primary" class="w-28" @click="$router.push({ name: 'Authentication' })">实名认证</a-button>
+      <a-button type="outline" class="w-28" @click="onEditAccountInfo">编辑资料</a-button>
     </div>
 
     <EditAccountInfoModal ref="EditAccountInfoModalRef" />

@@ -6,6 +6,11 @@ export function getUserInfo() {
   return axios.get<UserState>('/api/user/profile');
 }
 
+// 修改基本资料
+export function updateUserinfo(data: any) {
+  return axios.put<UserState>('/api/user/profile', data);
+}
+
 export function getMenuList() {
   return axios.post<RouteRecordNormalized[]>('/api/auth/menu');
 }

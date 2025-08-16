@@ -62,6 +62,23 @@
   .arco-table-container {
     overflow: hidden;
   }
+
+  .arco-modal-simple {
+    @apply ~'w-[343px] sm:w-[460px]';
+
+    .arco-modal-header {
+      margin-bottom: 12px;
+    }
+
+    .arco-modal-footer {
+      margin-top: 16px;
+      text-align: right;
+
+      .arco-btn {
+        @apply min-w-24;
+      }
+    }
+  }
 }
 
 @layer utilities {
