@@ -1,11 +1,11 @@
 <template>
   <a-layout>
-    <a-layout-header>
-      <div class="navbar">Header</div>
-    </a-layout-header>
+    <!-- <a-layout-header>
+      <div class="navbar"></div>
+    </a-layout-header> -->
     <a-layout-content>
-      <div style="height: calc(-64px + 100vh)">
-        <iframe :id="iframeId" class="ComfyUI-iframe" src="/ComfyUI.html" frameborder="0" title="comfyUI" />
+      <div style="height: 100vh">
+        <iframe :id="iframeId" class="ComfyUI-iframe" :src="comfyCloudUrl" frameborder="0" title="comfyUI" />
       </div>
     </a-layout-content>
   </a-layout>
@@ -21,6 +21,9 @@
   const route = useRoute();
 
   const iframeId = computed(() => `iframe${route.params.id}`);
+  const comfyCloudUrl = computed(() => {
+    return `${import.meta.env.VITE_COMFY_CLOUD_URL}#workflow_id=${route.params.id}`;
+  });
 
   useDark({
     selector: 'body',
