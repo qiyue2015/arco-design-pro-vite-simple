@@ -20,7 +20,7 @@ export interface WorkflowListRes {
 
 // 例表
 export function queryWorkflowList(params: WorkflowParams) {
-  return axios.get<WorkflowListRes, any>('/api/user/workflows', {
+  return axios.get<WorkflowListRes, any>('/v1/user/workflows', {
     params,
     paramsSerializer: (obj) => {
       return qs.stringify(obj);
@@ -30,22 +30,22 @@ export function queryWorkflowList(params: WorkflowParams) {
 
 // 增加
 export function postWorkflow(data: AnyObject) {
-  return axios.post('/api/user/workflows', data);
+  return axios.post('/v1/user/workflows', data);
 }
 
 // 删除
 export function deleteWorkflow(id: string) {
-  return axios.delete(`/api/user/workflows/${id}`);
+  return axios.delete(`/v1/user/workflows/${id}`);
 }
 
 // 修改
 export function putWorkflow(id: string, data: AnyObject) {
-  return axios.put(`/api/user/workflows/${id}`, data);
+  return axios.put(`/v1/user/workflows/${id}`, data);
 }
 
 // 详情
 export function getWorkflowDetail(id: string) {
-  return axios.get(`/api/user/workflows/${id}`, {
+  return axios.get(`/v1/user/workflows/${id}`, {
     params: { id },
   });
 }
