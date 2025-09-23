@@ -2,13 +2,12 @@
   <div class="login-container">
     <a-form ref="loginForm" :model="userInfo" :rules="rules" layout="vertical" size="large" @submit-success="handleSubmit">
       <a-form-item field="email" :validate-trigger="['change', 'blur']" hide-label>
-        <a-input v-model="userInfo.email" type="email" placeholder="邮箱地址" allow-clear />
+        <a-input v-model="userInfo.email" type="email" placeholder="Enter your email" allow-clear />
+        <template #help> New email? We'll automatically create an account for you </template>
       </a-form-item>
       <a-form-item field="code" :validate-trigger="['change', 'blur']" hide-label>
         <InputVerifyCode v-model="userInfo.code" :account="userInfo.email" type="email" @change="onSendVerifyCode" />
-      </a-form-item>
-      <a-form-item hide-label>
-        <AgreementNotice type="login" />
+        <template #help>我们将向你的邮箱发送一次性验证码</template>
       </a-form-item>
       <a-button type="primary" size="large" html-type="submit" long :loading="loading"> 登录 / 注册 </a-button>
     </a-form>
@@ -25,7 +24,6 @@
   import { sendEmailCode } from '@/api/app';
   import { Message } from '@arco-design/web-vue';
   import InputVerifyCode from '@/components/input-verify-code/index.vue';
-  import AgreementNotice from './AgreementNotice.vue';
 
   const { t } = useI18n();
   const { loading, setLoading } = useLoading();

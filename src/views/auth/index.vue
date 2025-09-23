@@ -2,29 +2,43 @@
   <div class="auth-container">
     <div class="logo">
       <div class="logo-text">{{ appStore?.app_name }}</div>
-      <a-divider direction="vertical" />
-      <div v-if="$route.name === 'login'" class="login-text">登录/注册</div>
-      <div v-if="$route.name === 'register'" class="login-text">注册</div>
+      <!-- <a-divider direction="vertical" /> -->
+      <!-- <div v-if="$route.name === 'login'" class="login-text">登录/注册</div> -->
+      <!-- <div v-if="$route.name === 'register'" class="login-text">注册</div> -->
     </div>
     <div class="content">
-      <div class="content-inner flex flex-col">
-        <div class="auth-title text-2xl font-brand mb-4">欢迎使用 CimfyUI.AI</div>
+      <div class="content-inner flex flex-col gap-4">
+        <div class="auth-title text-2xl font-brand mb-4">欢迎使用 ComfyUI.AI</div>
         <!-- 登录 -->
         <template v-if="$route.name === 'login'">
+          <a-button type="outline" size="large" long @click="onGoogleLogin">
+            <template #icon>
+              <icon-google color="#ea4335" />
+            </template>
+            Login with Google
+          </a-button>
+
+          <a-divider> OR </a-divider>
+
           <Login v-model:login-type="loginType" />
-          <div class="text-center text-sm">
+          <!-- <div class="text-center text-sm">
             <a-divider> 其他登录方式 </a-divider>
             <a-space size="large" class="mt-4">
               <icon-wechat size="32px" style="color: #1aad19" />
-              <icon-google size="28px" style="color: #4285f4" />
               <icon-github size="26px" />
+               <a-button type="primary" shape="circle" @click="onGoogleLogin">
+                  <template #icon>
+                    <icon-google size="24px" />
+                  </template>
+                </a-button>
             </a-space>
             <div v-if="loginType === 'password'" class="mt-10">
               没有账号？ <a-link class="text-sm" @click="onRegister">现在就注册</a-link>
               <a-divider direction="vertical" />
               <a-link class="text-sm" @click="onRegister">忘记密码</a-link>
             </div>
-          </div>
+          </div> -->
+          <AgreementNotice type="login" />
         </template>
 
         <!-- 注册 -->
@@ -48,6 +62,7 @@
   import { useRouter } from 'vue-router';
   import Login from './login.vue';
   import Register from './register.vue';
+  import AgreementNotice from './components/AgreementNotice.vue';
 
   const appStore = useAppStore();
   const router = useRouter();
@@ -64,10 +79,10 @@
   });
 
   // 登录方式
-  const loginType = ref<'password' | 'mobile'>('mobile');
+  const loginType = ref<'password' | 'mobile'>('mail');
 
   // 注册方式
-  const registerType = ref<'password' | 'mobile'>('mobile');
+  const registerType = ref<'password' | 'mobile'>('mail');
 
   const onLogin = () => {
     loginType.value = 'mobile';
@@ -77,6 +92,11 @@
   const onRegister = () => {
     registerType.value = 'password';
     router.push({ name: 'register' });
+  };
+
+  // Google登录
+  const onGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_GOOGLE_LOGIN_URL}`;
   };
 </script>
 
@@ -106,9 +126,8 @@
       @apply ~"relative flex flex-1 items-center justify-center";
 
       &-inner {
-        @apply w-full max-w-xl p-6 lg:p-10;
+        @apply w-full max-w-md p-6 lg:p-10;
 
-        min-height: 537px;
         overflow: hidden;
         background: var(--color-bg-4);
         border-radius: 12px;
