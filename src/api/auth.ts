@@ -30,33 +30,33 @@ export interface RegisterData {
 }
 
 export function register(data: RegisterData) {
-  return axios.post('/v1/auth/register', data);
+  return axios.post('/api/auth/register', data);
 }
 
 export function loginByAccount(data: AccountLoginData) {
-  return axios.post<LoginRes>('/v1/auth/login/account', data);
+  return axios.post<LoginRes>('/api/auth/login/account', data);
 }
 
 export function loginByMobile(data: MobileLoginData) {
-  return axios.post<LoginRes>('/v1/auth/login/mobile', data);
+  return axios.post<LoginRes>('/api/auth/login/mobile', data);
 }
 
 export function loginByEmail(data: EmailLoginData) {
-  return axios.post<LoginRes>('/v1/auth/login/email', data);
+  return axios.post<LoginRes>('/api/auth/login/email', data);
 }
 
 export function logout() {
-  return axios.post<LoginRes>('/v1/auth/logout');
+  return axios.post<LoginRes>('/api/auth/logout');
 }
 
 export function setPassword(data: { name: string; password: string; password_confirmation: string }) {
-  return axios.post('/v1/auth/set-password', data);
+  return axios.post('/api/auth/set-password', data);
 }
 
 export function changePassword(data: { current_password: string; password: string; password_confirmation: string }) {
-  return axios.post('/v1/auth/change-password', data);
+  return axios.post('/api/auth/change-password', data);
 }
 
 export function bindMobile(data: { mobile: string; code: string }) {
-  return axios.post('/v1/auth/bind/mobile', data);
+  return axios.post('/api/auth/bind/mobile', data);
 }

@@ -50,7 +50,7 @@ axios.interceptors.response.use(
     const res = response.data;
     // if the custom code is not 0, it is judged as an error.
     if (res.code !== 0) {
-      if (res.code === -1 && response.config.url !== '/v1/user/profile') {
+      if (res.code === -1 && response.config.url !== '/api/user/profile') {
         Modal.error({
           title: 'Confirm logout',
           content: 'You have been logged out, you can cancel to stay on this page, or log in again',

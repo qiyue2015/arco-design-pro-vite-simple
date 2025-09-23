@@ -3,21 +3,21 @@ import type { RouteRecordNormalized } from 'vue-router';
 import { UserState } from '@/store/modules/user/types';
 
 export function getUserInfo() {
-  return axios.get<UserState>('/v1/user/profile');
+  return axios.get<UserState>('/api/user/profile');
 }
 
 // 修改基本资料
 export function updateUserinfo(data: any) {
-  return axios.put<UserState>('/v1/user/profile', data);
+  return axios.put<UserState>('/api/user/profile', data);
 }
 
 export function getMenuList() {
-  return axios.post<RouteRecordNormalized[]>('/v1/auth/menu');
+  return axios.post<RouteRecordNormalized[]>('/api/auth/menu');
 }
 
 // 上传头像
 export function uploadAvatar(data: FormData) {
-  return axios.post('/v1/user/upload-avatar', data, {
+  return axios.post('/api/user/upload-avatar', data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

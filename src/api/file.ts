@@ -25,14 +25,14 @@ export interface FilesResponse {
 
 // 图片列表
 export function queryFiles(params: FileParams) {
-  return axios.get<any, FilesResponse>('/v1/file/images', {
+  return axios.get<any, FilesResponse>('/api/file/images', {
     params,
   });
 }
 
 // 批量删除文件
 export function deleteFiles(ids: string[]) {
-  return axios.delete(`/v1/files`, {
+  return axios.delete(`/api/files`, {
     data: {
       file_ids: ids,
     },
