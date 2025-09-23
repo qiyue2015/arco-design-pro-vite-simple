@@ -74,14 +74,14 @@
   import EditPasswordModal from './EditPasswordModal.vue';
   import EditPhoneModal from './EditPhoneModal.vue';
   import EditEmailModal from './EditEmailModal.vue';
-  import UserIcon from '../icons/user.svg?url';
-  import UnbindUserIcon from '../icons/user-unbind.svg?url';
+  // import UserIcon from '../icons/user.svg?url';
+  // import UnbindUserIcon from '../icons/user-unbind.svg?url';
   import MailIcon from '../icons/mail.svg?url';
   import MailIconUnbind from '../icons/mail-unbind.svg?url';
-  import PhoneIcon from '../icons/tel.svg?url';
-  import PhoneIconUnbind from '../icons/tel-unbind.svg?url';
-  import WechatIcon from '../icons/wechat.svg?url';
-  import WechatIconUnbind from '../icons/wechat-unbind.svg?url';
+  // import PhoneIcon from '../icons/tel.svg?url';
+  // import PhoneIconUnbind from '../icons/tel-unbind.svg?url';
+  // import WechatIcon from '../icons/wechat.svg?url';
+  // import WechatIconUnbind from '../icons/wechat-unbind.svg?url';
   import GoogleIcon from '../icons/google.svg?url';
   import GoogleIconUnbind from '../icons/google-unbind.svg?url';
 
@@ -95,30 +95,30 @@
   const EditEmailModalRef = ref();
 
   const loginTypes = ref([
-    {
-      type: 'password',
-      name: '密码',
-      description: '******',
-      status: 1,
-      icon: UserIcon,
-      unbind_icon: UnbindUserIcon,
-    },
-    {
-      type: 'mobile',
-      name: '手机号登录',
-      description: '绑定手机号后，可通方便的登录管理账号',
-      status: userInfo.value.mobile_verified ? 1 : 0,
-      icon: PhoneIcon,
-      unbind_icon: PhoneIconUnbind,
-      actions: [
-        {
-          label: userInfo.value.mobile_verified ? '修改' : '绑定',
-          onClick: () => {
-            EditPhoneModalRef.value.onEdit();
-          },
-        },
-      ],
-    },
+    // {
+    //   type: 'password',
+    //   name: '密码',
+    //   description: '******',
+    //   status: 1,
+    //   icon: UserIcon,
+    //   unbind_icon: UnbindUserIcon,
+    // },
+    // {
+    //   type: 'mobile',
+    //   name: '手机号登录',
+    //   description: '绑定手机号后，可通方便的登录管理账号',
+    //   status: userInfo.value.mobile_verified ? 1 : 0,
+    //   icon: PhoneIcon,
+    //   unbind_icon: PhoneIconUnbind,
+    //   actions: [
+    //     {
+    //       label: userInfo.value.mobile_verified ? '修改' : '绑定',
+    //       onClick: () => {
+    //         EditPhoneModalRef.value.onEdit();
+    //       },
+    //     },
+    //   ],
+    // },
     {
       type: 'email',
       name: '电子邮箱登录',
@@ -132,20 +132,20 @@
       type: 'google',
       name: 'Google 登录',
       description: '绑定后，可通过 Google 授权账号登录账号',
-      status: 0,
+      status: userInfo.value.google_auth_enabled ? 1 : 0,
       action_label: '解绑',
       icon: GoogleIcon,
       unbind_icon: GoogleIconUnbind,
     },
-    {
-      type: 'wechat',
-      name: '微信登录',
-      description: '绑定后，可通过微信授权登录账号',
-      status: 0,
-      action_label: '绑定',
-      icon: WechatIcon,
-      unbind_icon: WechatIconUnbind,
-    },
+    // {
+    //   type: 'wechat',
+    //   name: '微信登录',
+    //   description: '绑定后，可通过微信授权登录账号',
+    //   status: 0,
+    //   action_label: '绑定',
+    //   icon: WechatIcon,
+    //   unbind_icon: WechatIconUnbind,
+    // },
   ]);
 
   // 获取用户信息

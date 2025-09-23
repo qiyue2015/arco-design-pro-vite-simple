@@ -11,4 +11,5 @@ export interface UserState {
   mobile_verified: boolean;
   role: RoleType;
   identity_verified: boolean;
+  google_auth_enabled: boolean;
 }

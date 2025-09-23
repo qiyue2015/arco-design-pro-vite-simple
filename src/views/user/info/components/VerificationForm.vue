@@ -11,7 +11,7 @@
         </a-form-item>
       </a-tab-pane>
       <!-- 手机验证 -->
-      <a-tab-pane key="mobile" :disabled="!userInfo.mobile_verified" title="手机验证">
+      <!-- <a-tab-pane key="mobile" :disabled="!userInfo.mobile_verified" title="手机验证">
         <a-form-item label="手机号码" field="mobile" hide-label>
           <a-input v-model="authFormData.mobile" disabled placeholder="请输入手机号码">
             <template #prefix>+86</template>
@@ -20,13 +20,13 @@
         <a-form-item label="验证码" field="code" hide-label>
           <InputVerifyCode v-model="authFormData.code" :account="authFormData.mobile" @change="onMobileCode" />
         </a-form-item>
-      </a-tab-pane>
+      </a-tab-pane> -->
       <!-- 密码验证 -->
-      <a-tab-pane key="password" title="密码验证">
+      <!-- <a-tab-pane key="password" title="密码验证">
         <a-form-item label="当前密码" field="password" hide-label>
           <a-input-password v-model="authFormData.password" placeholder="请输入当前的密码" />
         </a-form-item>
-      </a-tab-pane>
+      </a-tab-pane> -->
     </a-tabs>
   </a-form>
 </template>
