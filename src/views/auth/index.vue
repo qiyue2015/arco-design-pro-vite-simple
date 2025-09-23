@@ -79,20 +79,20 @@
   });
 
   // 登录方式
-  const loginType = ref<'password' | 'mobile'>('mail');
+  const loginType = ref<'password' | 'mobile'>('password');
 
   // 注册方式
-  const registerType = ref<'password' | 'mobile'>('mail');
+  const registerType = ref<'password' | 'mobile'>('password');
 
   const onLogin = () => {
     loginType.value = 'mobile';
     router.push({ name: 'login' });
   };
 
-  const onRegister = () => {
-    registerType.value = 'password';
-    router.push({ name: 'register' });
-  };
+  // const onRegister = () => {
+  //   registerType.value = 'password';
+  //   router.push({ name: 'register' });
+  // };
 
   // Google登录
   const onGoogleLogin = () => {

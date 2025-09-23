@@ -16,19 +16,19 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue';
+  // import { computed } from 'vue';
   // import MobileLoginForm from './components/MobileLoginForm.vue';
   // import PasswordLoginForm from './components/PasswordLoginForm.vue';
   import MailLoginForm from './components/MailLoginForm.vue';
 
-  const props = defineProps<{ loginType: 'mobile' | 'password' }>();
-  const emits = defineEmits(['update:loginType']);
+  // const props = defineProps<{ loginType: 'mobile' | 'password' }>();
+  // const emits = defineEmits(['update:loginType']);
 
   // const loginType = computed(() => props.loginType);
 
-  function onTabChange(key: string) {
-    emits('update:loginType', key as 'mobile' | 'password');
-  }
+  // function onTabChange(key: string) {
+  //   emits('update:loginType', key as 'mobile' | 'password');
+  // }
 </script>
 
 <style lang="less" scoped>
