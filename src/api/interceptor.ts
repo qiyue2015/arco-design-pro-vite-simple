@@ -50,20 +50,22 @@ axios.interceptors.response.use(
     const res = response.data;
     // if the custom code is not 0, it is judged as an error.
     if (res.code !== 0) {
-      if (res.code === -1 && response.config.url !== '/api/user/profile') {
+      Message.error({
+        content: res.message || 'Error',
+        duration: 5 * 1000,
+      });
+      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
+      if (res.code === -1 && response.config.url !== '/api/user/info') {
         Modal.error({
           title: 'Confirm logout',
           content: 'You have been logged out, you can cancel to stay on this page, or log in again',
           okText: 'Re-Login',
           async onOk() {
-            useUserStore().logoutCallBack();
+            const userStore = useUserStore();
+
+            await userStore.logout();
             window.location.reload();
           },
-        });
-      } else {
-        Message.error({
-          content: res.message || 'Error',
-          duration: 5 * 1000,
         });
       }
       return Promise.reject(new Error(res.message || 'Error'));
