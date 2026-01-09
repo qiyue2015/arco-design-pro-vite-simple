@@ -19,8 +19,7 @@ const USER: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.user.info',
         requiresAuth: true,
-        icon: 'icon-user',
-        roles: ['user'],
+        roles: ['*'],
       },
     },
     {
@@ -30,10 +29,7 @@ const USER: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.user.authentication',
         requiresAuth: true,
-        icon: 'icon-idcard',
-        roles: ['user'],
-        hideInMenu: true,
-        activeMenu: 'UserInfo',
+        roles: ['*'],
       },
     },
   ],
