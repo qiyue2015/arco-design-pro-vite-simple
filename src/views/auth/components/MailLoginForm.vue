@@ -2,14 +2,15 @@
   <div class="login-container">
     <a-form ref="loginForm" :model="userInfo" :rules="rules" layout="vertical" size="large" @submit-success="handleSubmit">
       <a-form-item field="email" :validate-trigger="['change', 'blur']" hide-label>
-        <a-input v-model="userInfo.email" type="email" placeholder="Enter your email" allow-clear />
-        <template #help> New email? We'll automatically create an account for you </template>
+        <a-input v-model="userInfo.email" type="email" placeholder="邮箱地址" allow-clear />
       </a-form-item>
       <a-form-item field="code" :validate-trigger="['change', 'blur']" hide-label>
-        <InputVerifyCode v-model="userInfo.code" :account="userInfo.email" type="email" @change="onSendVerifyCode" />
-        <template #help>我们将向你的邮箱发送一次性验证码</template>
+        <InputVerifyCode v-model="userInfo.code" :account="userInfo.email" type="email" />
       </a-form-item>
-      <a-button type="primary" size="large" html-type="submit" long :loading="loading"> 登录 / 注册 </a-button>
+      <a-form-item hide-label>
+        <AgreementNotice type="login" />
+      </a-form-item>
+      <a-button type="primary" size="large" html-type="submit" long :loading="loading"> 登录 </a-button>
     </a-form>
   </div>
 </template>
@@ -21,9 +22,9 @@
   import { useUserStore } from '@/store';
   import { useRouter } from 'vue-router';
   import { DEFAULT_ROUTE_NAME } from '@/router/constants';
-  import { sendEmailCode } from '@/api/app';
   import { Message } from '@arco-design/web-vue';
   import InputVerifyCode from '@/components/input-verify-code/index.vue';
+  import AgreementNotice from './AgreementNotice.vue';
 
   const { t } = useI18n();
   const { loading, setLoading } = useLoading();
@@ -31,8 +32,8 @@
   const router = useRouter();
 
   const userInfo = reactive({
-    email: '',
-    code: '',
+    email: 'fengqiyue@gmail.com',
+    code: '1234',
   });
 
   const rules = {
@@ -49,16 +50,11 @@
     ],
   };
 
-  // 发送验证码
-  const onSendVerifyCode = (account: string) => {
-    sendEmailCode(account);
-  };
-
   const loginForm = ref();
   const handleSubmit = async (values: Record<string, any>) => {
     try {
       setLoading(true);
-      await userStore.login(values as any, 'email');
+      await userStore.login(values as any);
       const { redirect, ...othersQuery } = router.currentRoute.value.query;
       router.push({
         name: (redirect as string) || DEFAULT_ROUTE_NAME,
