@@ -1,8 +1,8 @@
 <template>
   <a-layout-footer class="footer-container">
-    <div class="footer-item">Copyright © 2025 comfyui.ai All Rights Reserved </div>
-    <!-- <div class="footer-item">西昌齐跃网络科技有限责任公司</div> -->
-    <!-- <div class="flex flex-col">
+    <div class="footer-item">Copyright © 2025 admin9.com All Rights Reserved </div>
+    <div class="footer-item">西昌齐跃网络科技有限责任公司</div>
+    <div class="flex flex-col">
       <a-link href="https://beian.miit.gov.cn/" target="_blank" class="ml-1">
         <template #icon>
           <img
@@ -12,7 +12,7 @@
         </template>
         蜀ICP备2022018286号-1
       </a-link>
-    </div> -->
+    </div>
   </a-layout-footer>
 </template>
 
@@ -21,7 +21,6 @@
 <style lang="less" scoped>
   .footer-container {
     @apply w-full h-24 lg:h-10 flex flex-col lg:flex-row justify-center items-center text-center text-sm gap-2 lg:gap-1;
-
     color: var(--color-text-2);
   }
 </style>

@@ -1,13 +1,12 @@
 import { defineStore } from 'pinia';
-import { getUserInfo } from '@/api/user';
 import {
-  loginByAccount,
-  loginByEmail,
-  loginByMobile,
-  RegisterData,
+  login as userLogin,
   logout as userLogout,
   register as userRegister,
-} from '@/api/auth';
+  getUserInfo,
+  LoginData,
+  RegisterData,
+} from '@/api/user';
 import { setToken, clearToken } from '@/utils/auth';
 import { removeRouteListener } from '@/utils/route-listener';
 import { UserState } from './types';
@@ -16,17 +15,25 @@ import useAppStore from '../app';
 const useUserStore = defineStore('user', {
   state: (): UserState => ({
     id: '',
-    name: undefined,
-    mobile: '',
-    mobile_verified: false,
-    email: undefined,
-    email_verified: false,
     nickname: undefined,
+    name: undefined,
     avatar: undefined,
+    job: undefined,
+    organization: undefined,
+    location: undefined,
+    email: undefined,
     introduction: undefined,
+    personalWebsite: undefined,
+    jobName: undefined,
+    organizationName: undefined,
+    locationName: undefined,
+    phone: '',
+    registrationDate: undefined,
+    accountId: undefined,
+    certification: undefined,
     role: '',
-    identity_verified: false,
-    google_auth_enabled: false,
+    is_identity_verified: false,
+    introduce: '',
   }),
 
   getters: {
@@ -60,18 +67,10 @@ const useUserStore = defineStore('user', {
     },
 
     // Login
-    async login(loginForm: any, type: string) {
+    async login(loginForm: LoginData) {
       try {
-        if (type === 'account') {
-          const res = await loginByAccount(loginForm);
-          setToken(res.data.token);
-        } else if (type === 'mobile') {
-          const res = await loginByMobile(loginForm);
-          setToken(res.data.token);
-        } else if (type === 'email') {
-          const res = await loginByEmail(loginForm);
-          setToken(res.data.token);
-        }
+        const res = await userLogin(loginForm);
+        setToken(res.data.token);
       } catch (err) {
         clearToken();
         throw err;
@@ -80,8 +79,8 @@ const useUserStore = defineStore('user', {
     // Register
     async register(registerForm: RegisterData) {
       try {
-        const { data } = await userRegister(registerForm);
-        setToken(data.token);
+        const res = await userRegister(registerForm);
+        setToken(res.data.token);
       } catch (err) {
         clearToken();
         throw err;

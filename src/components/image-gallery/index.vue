@@ -4,15 +4,20 @@
   import { getToken } from '@/utils/auth';
   import { FileRecord, deleteFiles, queryFiles } from '@/api/file';
 
-  interface GalleryFile {
-    id?: string;
-    url: string;
-  }
-  const props = defineProps<{
-    modelValue: GalleryFile[] | string;
-    buttonText?: string;
-    name?: string;
-  }>();
+  const props = defineProps({
+    modelValue: {
+      type: [Array, String],
+      default: () => [],
+    },
+    buttonText: {
+      type: String,
+      default: '选择图片',
+    },
+    name: {
+      type: String,
+      default: 'file',
+    },
+  });
 
   const emits = defineEmits(['update:modelValue', 'change']);
 
@@ -22,7 +27,7 @@
   const token = getToken();
   const action = `${import.meta.env.VITE_API_BASE_URL}/api/upload/image`;
 
-  const fileLimit = ref<number>(Number((attrs as Record<string, unknown>).limit ?? 0));
+  const fileLimit = ref(attrs.limit || 0);
   const fileList = ref<FileItem[]>([]);
   const selectKeys = ref<string[]>([]);
   const selectCount = computed(() => selectKeys.value.length);
@@ -133,7 +138,7 @@
       if (fileLimit.value === 1) {
         emits('update:modelValue', '');
       } else {
-        const newFiles = fileList.value.filter((item: FileItem) => item.uid !== fileItem.uid);
+        const newFiles = fileList.value.filter((item) => item.uid !== fileItem.uid);
         emits('update:modelValue', newFiles);
       }
       resolve(true);
@@ -176,7 +181,7 @@
   onMounted(() => {
     // 构造 fileList 的目的是为了给组件展示图片例表使用 <a-uploader />
     if (Array.isArray(props.modelValue)) {
-      fileList.value = props.modelValue.map((item: GalleryFile, index: number) => {
+      fileList.value = props.modelValue.map((item, index) => {
         return {
           uid: item.id || `uid-${index}-${Date.now()}`,
           name: item.url.substring(item.url.lastIndexOf('/') + 1),
@@ -189,8 +194,8 @@
       fileList.value = [
         {
           uid: `uid-${Date.now()}`,
-          name: (props.modelValue as string).substring((props.modelValue as string).lastIndexOf('/') + 1),
-          url: props.modelValue as string,
+          name: props.modelValue.substring(props.modelValue.lastIndexOf('/') + 1),
+          url: props.modelValue,
         },
       ];
     } else {

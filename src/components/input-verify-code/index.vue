@@ -13,40 +13,28 @@
 
   const attrs = useAttrs();
 
-  const props = withDefaults(
-    defineProps<{
-      type?: 'mobile' | 'email';
-      account: string | undefined | null;
-    }>(),
-    {
-      type: 'mobile',
-    }
-  );
-  const emits = defineEmits(['change']);
+  const props = defineProps<{
+    type: 'phone' | 'email';
+    account: string;
+  }>();
 
   const sending = ref(false);
   const countdown = ref(60);
   const interval = ref<ReturnType<typeof setInterval> | null>(null);
 
-  const isValidMobile = (mobile: string) => {
-    if (mobile) {
-      return /^1[3-9]\d{9}$/.test(mobile);
-    }
-    return false;
+  const isValidPhone = (phone: string) => {
+    return /^1[3-9]\d{9}$/.test(phone);
   };
 
   const isValidEmail = (email: string) => {
-    if (email) {
-      return /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(email);
-    }
-    return false;
+    return /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(email);
   };
 
   const canSendVerifyCode = computed(() => {
-    if (props.type === 'mobile' && props.account) {
-      return !sending.value && isValidMobile(props.account);
+    if (props.type === 'phone') {
+      return !sending.value && isValidPhone(props.account);
     }
-    if (props.type === 'email' && props.account) {
+    if (props.type === 'email') {
       return !sending.value && isValidEmail(props.account);
     }
     return false;
@@ -54,10 +42,10 @@
 
   const handleSendVerifyCode = () => {
     if (!props.account) {
-      Message.error(props.type === 'mobile' ? '请先输入手机号' : '请先输入邮箱');
+      Message.error(props.type === 'phone' ? '请先输入手机号' : '请先输入邮箱');
       return;
     }
-    if (props.type === 'mobile' && !isValidMobile(props.account)) {
+    if (props.type === 'phone' && !isValidPhone(props.account)) {
       Message.error('请输入正确的手机号');
       return;
     }
@@ -69,15 +57,12 @@
       return;
     }
 
-    emits('change', props.account);
-
     sending.value = true;
     countdown.value = 60;
 
     if (interval.value) {
       clearInterval(interval.value);
     }
-
     interval.value = setInterval(() => {
       if (countdown.value > 0) {
         countdown.value -= 1;

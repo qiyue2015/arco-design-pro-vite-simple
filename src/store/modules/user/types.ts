@@ -2,14 +2,22 @@ export type RoleType = '' | '*' | 'admin' | 'user';
 export interface UserState {
   id: string;
   name?: string;
-  nickname?: string;
   avatar?: string;
+  job?: string;
+  organization?: string;
+  location?: string;
   email?: string;
-  email_verified: boolean;
   introduction?: string;
-  mobile?: string;
-  mobile_verified: boolean;
+  personalWebsite?: string;
+  jobName?: string;
+  organizationName?: string;
+  locationName?: string;
+  phone: string;
+  registrationDate?: string;
+  accountId?: string;
+  certification?: number;
   role: RoleType;
-  identity_verified: boolean;
-  google_auth_enabled: boolean;
+  nickname?: string;
+  is_identity_verified: boolean;
+  introduce?: string;
 }
