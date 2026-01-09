@@ -1,175 +1,121 @@
 <template>
   <a-card v-bind="{ ...attrs }">
-    <a-space direction="vertical" fill>
-      <template v-for="(item, index) in loginTypes" :key="index">
-        <a-divider v-if="index" />
-        <auth-method-item :item="item">
-          <!-- 账号密码 -->
-          <template v-if="item.type === 'password'">
-            <a-button v-if="item.status === 0" class="w-28" type="outline" @click="EditPasswordModalRef.onBind()">
-              设置密码
-            </a-button>
-            <a-button v-if="item.status === 1" class="w-28" long type="outline" @click="EditPasswordModalRef.onRebind()">
-              重置密码
-            </a-button>
-          </template>
-
-          <!-- 手机号 -->
-          <template v-if="item.type === 'mobile'">
-            <!-- 没有绑定手机号 -->
-            <a-button v-if="item.status === 0" class="w-28" type="outline" @click="EditPhoneModalRef.onBind()"> 绑定 </a-button>
-
-            <!-- 已绑定过手机号 -->
-            <a-dropdown v-if="item.status">
-              <a-button type="outline" class="w-28"> 编辑 </a-button>
-              <template #content>
-                <a-doption @click="EditPhoneModalRef.onRebind()">更换绑定</a-doption>
-                <a-doption @click="EditPhoneModalRef.onUnbind()">解除绑定</a-doption>
-              </template>
-            </a-dropdown>
-          </template>
-
-          <!-- 电子邮箱 -->
-          <template v-if="item.type === 'email'">
-            <!-- 没有绑定电子邮箱 -->
-            <a-button v-if="item.status === 0" type="outline" class="w-28" @click="EditPasswordModalRef.onBind()">
-              绑定
-            </a-button>
-
-            <!-- 已绑定过电子邮箱 -->
-            <a-dropdown v-if="item.status">
-              <a-button type="outline" class="w-28"> 编辑 </a-button>
-              <template #content>
-                <a-doption @click="EditEmailModalRef.onRebind()">更换绑定</a-doption>
-                <a-doption @click="EditEmailModalRef.onUnbind()">解除绑定</a-doption>
-              </template>
-            </a-dropdown>
-          </template>
-
-          <!-- Google -->
-          <template v-if="item.type === 'google'">
-            <a-button v-if="item.status === 0" type="outline" class="w-28" @click="onGoogleBind">绑定</a-button>
-            <a-button v-if="item.status === 1" type="outline" class="w-28" @click="onGoogleUnbind">解绑</a-button>
-          </template>
-
-          <!-- 微信登录 -->
-          <template v-if="item.type === 'wechat'">
-            <a-button v-if="item.status === 0" type="outline" class="w-28" @click="onWechatBind">绑定</a-button>
-            <a-button v-if="item.status === 1" type="outline" class="w-28" @click="onWechatUnbind">解绑</a-button>
-          </template>
-        </auth-method-item>
-      </template>
-    </a-space>
+    <a-row v-for="(item, index) in loginTypes" :key="index" :gutter="[16, 54]" align="center">
+      <a-col :xs="19" :sm="22" class="flex">
+        <img v-if="item.status === 1" :src="item.icon" :alt="item.name" />
+        <img v-if="item.status === 0" :src="item.unbind_icon" :alt="item.name" />
+        <div class="ml-4">
+          <div class="flex items-center">
+            <span class="mr-2 font-medium">{{ item.name }}</span>
+            <template v-if="item.type === 'password'">
+              <a-badge v-if="item.status === 1" status="success" text="已设置" style="--color-text-1: rgb(var(--success-6))" />
+              <a-badge v-if="item.status === 0" status="warning" text="未设置" style="--color-text-1: rgb(var(--warning-6))" />
+            </template>
+            <template v-else>
+              <a-badge v-if="item.status === 1" status="success" text="已绑定" style="--color-text-1: rgb(var(--success-6))" />
+              <a-badge v-if="item.status === 0" status="warning" text="未绑定" style="--color-text-1: rgb(var(--warning-6))" />
+            </template>
+          </div>
+          <div class="text-sm mt-2">{{ item.description }}</div>
+        </div>
+      </a-col>
+      <a-col :xs="5" :sm="2" class="flex justify-end items-center">
+        <template v-if="item.type === 'password'">
+          <a-button type="primary" status="normal" size="small" @click="onAction(item)">修改</a-button>
+        </template>
+        <template v-else>
+          <a-button v-if="item.status === 0" type="primary" status="normal" size="small" @click="onAction(item)">绑定</a-button>
+          <a-button v-if="item.status === 1" status="normal" size="small" @click="onAction(item)">解绑</a-button>
+        </template>
+      </a-col>
+    </a-row>
 
     <EditPasswordModal ref="EditPasswordModalRef" />
-    <EditPhoneModal ref="EditPhoneModalRef" @success="getUserinfo" />
-    <EditEmailModal ref="EditEmailModalRef" @success="getUserinfo" />
+    <EditPhoneModal ref="EditPhoneModalRef" />
+    <EditEmailModal ref="EditEmailModalRef" />
   </a-card>
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, useAttrs } from 'vue';
-  import { useUserStore } from '@/store';
-  import AuthMethodItem from './AuthMethodItem.vue';
+  import { ref, useAttrs } from 'vue';
+  import { Message } from '@arco-design/web-vue';
+  import UserIcon from '../icons/user.svg?url';
+  import UnbindUserIcon from '../icons/user-unbind.svg?url';
+  import MailIcon from '../icons/mail.svg?url';
+  import MailIconUnbind from '../icons/mail-unbind.svg?url';
+  import PhoneIcon from '../icons/tel.svg?url';
+  import PhoneIconUnbind from '../icons/tel-unbind.svg?url';
+  import WechatIcon from '../icons/wechat.svg?url';
+  import WechatIconUnbind from '../icons/wechat-unbind.svg?url';
+  import GoogleIcon from '../icons/google.svg?url';
+  import GoogleIconUnbind from '../icons/google-unbind.svg?url';
   import EditPasswordModal from './EditPasswordModal.vue';
   import EditPhoneModal from './EditPhoneModal.vue';
   import EditEmailModal from './EditEmailModal.vue';
-  // import UserIcon from '../icons/user.svg?url';
-  // import UnbindUserIcon from '../icons/user-unbind.svg?url';
-  import MailIcon from '../icons/mail.svg?url';
-  import MailIconUnbind from '../icons/mail-unbind.svg?url';
-  // import PhoneIcon from '../icons/tel.svg?url';
-  // import PhoneIconUnbind from '../icons/tel-unbind.svg?url';
-  // import WechatIcon from '../icons/wechat.svg?url';
-  // import WechatIconUnbind from '../icons/wechat-unbind.svg?url';
-  import GoogleIcon from '../icons/google.svg?url';
-  import GoogleIconUnbind from '../icons/google-unbind.svg?url';
 
   const attrs = useAttrs();
-  const userStore = useUserStore();
 
-  const userInfo = computed(() => userStore.userInfo);
+  const loginTypes = ref([
+    {
+      type: 'password',
+      icon: UserIcon,
+      unbind_icon: UnbindUserIcon,
+      status: 0,
+      name: '账号密码登录',
+      description: '您未设置密码，为了您的账号安全，请及时设置密码',
+      action_label: '修改',
+    },
+    {
+      type: 'phone',
+      icon: PhoneIcon,
+      unbind_icon: PhoneIconUnbind,
+      status: 1,
+      name: '手机号登录',
+      description: '可通过手机验证码快捷登录',
+      action_label: '修改',
+    },
+    {
+      type: 'email',
+      icon: MailIcon,
+      unbind_icon: MailIconUnbind,
+      status: 0,
+      name: '邮箱登录',
+      description: '可通过邮箱验证码进行登录',
+      action_label: '修改',
+    },
+    {
+      type: 'google',
+      icon: GoogleIcon,
+      unbind_icon: GoogleIconUnbind,
+      status: 0,
+      name: 'Google 登录',
+      description: '绑定后，可通过 Google 账号登录',
+      action_label: '解绑',
+    },
+    {
+      type: 'wechat',
+      icon: WechatIcon,
+      unbind_icon: WechatIconUnbind,
+      status: 1,
+      name: '微信登录',
+      description: '绑定后，可通过微信账号登录',
+      action_label: '绑定',
+    },
+  ]);
 
   const EditPasswordModalRef = ref();
   const EditPhoneModalRef = ref();
   const EditEmailModalRef = ref();
 
-  const loginTypes = ref([
-    // {
-    //   type: 'password',
-    //   name: '密码',
-    //   description: '******',
-    //   status: 1,
-    //   icon: UserIcon,
-    //   unbind_icon: UnbindUserIcon,
-    // },
-    // {
-    //   type: 'mobile',
-    //   name: '手机号登录',
-    //   description: '绑定手机号后，可通方便的登录管理账号',
-    //   status: userInfo.value.mobile_verified ? 1 : 0,
-    //   icon: PhoneIcon,
-    //   unbind_icon: PhoneIconUnbind,
-    //   actions: [
-    //     {
-    //       label: userInfo.value.mobile_verified ? '修改' : '绑定',
-    //       onClick: () => {
-    //         EditPhoneModalRef.value.onEdit();
-    //       },
-    //     },
-    //   ],
-    // },
-    {
-      type: 'email',
-      name: '电子邮箱登录',
-      description: userInfo.value.email_verified ? userInfo.value.email : '绑定电子邮箱后，可通方便的登录管理账号',
-      status: userInfo.value.email_verified ? 1 : 0,
-      action_label: '修改',
-      icon: MailIcon,
-      unbind_icon: MailIconUnbind,
-    },
-    {
-      type: 'google',
-      name: 'Google 登录',
-      description: '绑定后，可通过 Google 授权账号登录账号',
-      status: userInfo.value.google_auth_enabled ? 1 : 0,
-      action_label: '解绑',
-      icon: GoogleIcon,
-      unbind_icon: GoogleIconUnbind,
-    },
-    // {
-    //   type: 'wechat',
-    //   name: '微信登录',
-    //   description: '绑定后，可通过微信授权登录账号',
-    //   status: 0,
-    //   action_label: '绑定',
-    //   icon: WechatIcon,
-    //   unbind_icon: WechatIconUnbind,
-    // },
-  ]);
-
-  // 获取用户信息
-  const getUserinfo = () => {
-    userStore.info();
-  };
-
-  // Google 绑定
-  const onGoogleBind = () => {
-    //
-  };
-
-  // 解除 Google 绑定
-  const onGoogleUnbind = () => {
-    //
-  };
-
-  // 微信绑定
-  const onWechatBind = () => {
-    //
-  };
-
-  // 解除 微信 绑定
-  const onWechatUnbind = () => {
-    //
+  const onAction = (item: any) => {
+    if (item.type === 'password') {
+      EditPasswordModalRef.value?.onEdit();
+    } else if (item.type === 'phone') {
+      EditPhoneModalRef.value?.onEdit();
+    } else if (item.type === 'email') {
+      EditEmailModalRef.value?.onEdit();
+    } else {
+      Message.info('跳转至授权页面');
+    }
   };
 </script>

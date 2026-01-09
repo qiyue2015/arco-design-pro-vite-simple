@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <a-card title="实名认证" class="general-card flex-1">
+    <a-card title="实名认证" class="general-card">
       <a-form ref="formRef" :model="formData" :rules="formRules" layout="horizontal" @submit-success="handleSubmit">
         <a-form-item label="主体类型"> 个人账号 </a-form-item>
         <a-form-item label="认证方式">
@@ -72,3 +72,12 @@
     }, 500);
   };
 </script>
+
+<style lang="less" scoped>
+  .basic-info {
+    :deep(.arco-card-header) {
+      --color-text-1: rgb(var(--success-6));
+      background: linear-gradient(rgba(232, 255, 234, 0.5), rgba(255, 255, 255, 0));
+    }
+  }
+</style>

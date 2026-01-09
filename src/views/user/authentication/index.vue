@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row h-full">
+  <div class="h-full">
     <Verified v-if="isVerified" />
     <Unverified v-else />
   </div>
@@ -12,5 +12,5 @@
   import Unverified from './components/Unverified.vue';
 
   const userStore = useUserStore();
-  const isVerified = computed(() => userStore.userInfo?.identity_verified);
+  const isVerified = computed(() => userStore.userInfo?.is_identity_verified);
 </script>

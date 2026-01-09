@@ -1,95 +1,89 @@
 <template>
-  <a-modal v-model:visible="visible" title-align="start" :ok-text="okText" simple @before-ok="onSave" @close="onReset">
-    <template #title>
-      <div v-if="type === 'bind'">设置密码</div>
-      <div v-if="type === 'rebind'">重置密码</div>
-    </template>
-    <!-- 验证表单 -->
-    <template v-if="formStep === 1 && type !== 'bind'">
-      <VerificationForm ref="VerificationFormRef" @success="onSuccess" />
-    </template>
-    <!-- 绑定/换绑表单 -->
-    <div v-if="formStep === 2 || type === 'bind'" class="mt-4">
-      <a-form ref="formRef" :model="formData" layout="vertical">
-        <a-form-item label="新密码" field="password">
-          <a-input-password v-model="formData.password" placeholder="请输入新密码" />
-        </a-form-item>
-        <a-form-item label="确认密码" field="password_confirmation">
-          <a-input-password v-model="formData.password_confirmation" placeholder="请再次输入新密码" />
-        </a-form-item>
-      </a-form>
-    </div>
+  <a-modal v-model:visible="visible" title="修改密码" title-align="start" @before-ok="onSave" @close="onReset">
+    <a-form ref="formRef" :rules="formRules" :model="formData" layout="vertical">
+      <a-form-item label="原始密码" field="password">
+        <a-input-password v-model="formData.password" placeholder="请输入原始密码" />
+      </a-form-item>
+      <a-form-item label="新密码" field="new_password">
+        <a-input-password v-model="formData.new_password" placeholder="请输入新密码" />
+      </a-form-item>
+      <a-form-item label="确认密码" field="confirm_password">
+        <a-input-password v-model="formData.confirm_password" placeholder="请再次输入新密码" />
+      </a-form-item>
+    </a-form>
   </a-modal>
 </template>
 
 <script setup lang="ts">
-  import { computed, ref } from 'vue';
+  import { ref } from 'vue';
   import { FormInstance } from '@arco-design/web-vue';
   import { useVisible } from '@/hooks';
-  import VerificationForm from './VerificationForm.vue';
 
   const { visible, setVisible } = useVisible(false);
 
-  const type = ref<'bind' | 'rebind'>();
-  const formStep = ref(1);
   const formRef = ref<FormInstance>();
-  const formData = ref({ password: '', password_confirmation: '' });
-  const VerificationFormRef = ref();
-
-  const okText = computed(() => (formStep.value === 1 ? '下一步' : '确定'));
-
-  // 表单验证成功
-  const onSuccess = () => {
-    formStep.value = 2;
+  const formData = ref({
+    password: '',
+    new_password: '',
+    confirm_password: '',
+  });
+  const formRules = {
+    password: [{ required: true, message: '请输入原始密码' }],
+    new_password: [
+      {
+        required: true,
+        message: '请输入新密码',
+      },
+      {
+        validator: (value: string, cb: (msg?: string) => void) => {
+          if (!value || value.length < 6 || value.length > 20) {
+            cb('密码长度在6到20个字符之间');
+            return;
+          }
+          // 至少包含三种：大写字母、小写字母、数字、特殊字符
+          const arr = [/[a-z]/.test(value), /[A-Z]/.test(value), /\d/.test(value), /[@$!%*?&]/.test(value)];
+          const count = arr.filter(Boolean).length;
+          if (count < 3) {
+            cb('密码需包含大写字母、小写字母、数字、特殊字符中的三种');
+          } else {
+            cb();
+          }
+        },
+      },
+    ],
+    confirm_password: [
+      {
+        required: true,
+        message: '请再次输入新密码',
+      },
+      {
+        validator: (value: string, cb: (msg?: string) => void) => {
+          if (value !== formData.value.new_password) {
+            cb('两次输入的新密码不一致');
+          } else {
+            cb();
+          }
+        },
+      },
+    ],
   };
 
   const onSave = async () => {
     try {
-      // 验证表单
-      if (type.value === 'rebind') {
-        VerificationFormRef.value?.onSubmit();
+      if (await formRef.value.validate()) {
         return false;
       }
-      return false;
-
-      // // 手机号解绑
-      // if (type.value === 'unbind') {
-      //   Message.success('手机号码已成功解除绑定');
-      //   return true;
-      // }
-
-      // // 手机号换绑
-      // if (type.value === 'rebind') {
-      //   // 第2步
-      //   if (formStep.value === 1) {
-      //     formStep.value = 2;
-      //     return false;
-      //   }
-      //   Message.success('手机号码已成功更换绑定');
-      //   return true;
-      // }
-      // return false;
+      return true;
     } catch {
       return false;
     }
   };
 
   const onReset = () => {
-    formStep.value = 1;
     formRef.value?.resetFields();
   };
 
-  // 初次绑定手机
-  const onBind = async () => {
-    type.value = 'bind';
-    setVisible(true);
-  };
+  const onEdit = async () => setVisible(true);
 
-  // 换绑定手机
-  const onRebind = async () => {
-    type.value = 'rebind';
-    setVisible(true);
-  };
-
-  defineExpose({ onBind, onRebind });
+  defineExpose({ onEdit });
 </script>
