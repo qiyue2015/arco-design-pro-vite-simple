@@ -27,7 +27,7 @@ export interface ShopListRes {
 
 // 例表
 export function queryShopList(params: ShopParams) {
-  return axios.get<any, ShopListRes>('/v1/store/shops', {
+  return axios.get<any, ShopListRes>('/store/admin/shops', {
     params,
     paramsSerializer: (obj) => {
       return qs.stringify(obj);
@@ -37,22 +37,22 @@ export function queryShopList(params: ShopParams) {
 
 // 增加
 export function postShop(data: AnyObject) {
-  return axios.post('/api/shops', data);
+  return axios.post('/store/admin/shops', data);
 }
 
 // 删除
 export function deleteShop(id: number) {
-  return axios.delete(`/api/shops/${id}`);
+  return axios.delete(`/store/admin/shops/${id}`);
 }
 
 // 修改
 export function putShop(id: number, data: AnyObject) {
-  return axios.put(`/api/shops/${id}`, data);
+  return axios.put(`/store/admin/shops/${id}`, data);
 }
 
 // 详情
 export function getShopDetail(id: number) {
-  return axios.get(`/api/shops/${id}`, {
+  return axios.get(`/store/admin/shops/${id}`, {
     params: { id },
   });
 }
