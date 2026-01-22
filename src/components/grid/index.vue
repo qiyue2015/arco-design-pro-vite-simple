@@ -1,19 +1,21 @@
 <template>
   <a-card class="grid-card" v-bind="{ ...attrs }">
-    <template v-if="attrs.title" #title>
-      <span>{{ attrs.title }}</span>
-      <a-tooltip v-if="slots.tooltip" position="right">
-        <template #content>
-          <slot name="tooltip" />
-        </template>
-        <icon-question-circle />
-      </a-tooltip>
-      <a-tooltip v-else-if="attrs.tooltip" position="right">
-        <template #content>
-          {{ attrs.tooltip }}
-        </template>
-        <icon-question-circle />
-      </a-tooltip>
+    <template v-if="attrs.title || slots.title" #title>
+      <slot name="title">
+        <span>{{ attrs.title }}</span>
+        <a-tooltip v-if="slots.tooltip" position="right">
+          <template #content>
+            <slot name="tooltip" />
+          </template>
+          <icon-question-circle />
+        </a-tooltip>
+        <a-tooltip v-else-if="attrs.tooltip" position="right">
+          <template #content>
+            {{ attrs.tooltip }}
+          </template>
+          <icon-question-circle />
+        </a-tooltip>
+      </slot>
     </template>
     <!-- default slot -->
     <a-space direction="vertical" size="medium" fill>
@@ -32,15 +34,18 @@
 <style lang="less" scoped>
   .grid-card {
     @apply h-full;
-    border-radius: 4px;
+
     border: none;
+    border-radius: 4px;
+
     & > :deep(.arco-card-header) {
       height: auto;
       padding: 20px;
       border: none;
     }
+
     & > :deep(.arco-card-body) {
-      padding: 0 20px 20px 20px;
+      padding: 0 20px 20px;
     }
 
     :deep(.arco-card-header-title) {
