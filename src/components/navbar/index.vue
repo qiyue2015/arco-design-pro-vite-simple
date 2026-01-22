@@ -16,7 +16,7 @@
     </div>
     <ul class="right-side">
       <li>
-        <a-tooltip :content="theme === 'light' ? $t('settings.navbar.theme.toDark') : $t('settings.navbar.theme.toLight')">
+        <a-tooltip :content="theme === 'light' ? '点击切换为暗黑模式' : '点击切换为亮色模式'">
           <a-button class="nav-btn" type="outline" :shape="'circle'" @click="handleToggleTheme">
             <template #icon>
               <icon-moon-fill v-if="theme === 'dark'" />
@@ -26,7 +26,7 @@
         </a-tooltip>
       </li>
       <li>
-        <a-tooltip :content="$t('settings.navbar.alerts')">
+        <a-tooltip content="消息通知">
           <div class="message-box-trigger">
             <a-badge :count="9" dot>
               <a-button class="nav-btn" type="outline" :shape="'circle'" @click="setPopoverVisible">
@@ -48,7 +48,7 @@
         </a-popover>
       </li>
       <li v-if="appStore.device != 'mobile'">
-        <a-tooltip :content="isFullscreen ? $t('settings.navbar.screen.toExit') : $t('settings.navbar.screen.toFull')">
+        <a-tooltip :content="isFullscreen ? '点击退出全屏模式' : '点击切换全屏模式'">
           <a-button class="nav-btn" type="outline" :shape="'circle'" @click="toggleFullScreen">
             <template #icon>
               <icon-fullscreen-exit v-if="isFullscreen" />
@@ -58,7 +58,7 @@
         </a-tooltip>
       </li>
       <li>
-        <a-tooltip :content="$t('settings.title')">
+        <a-tooltip content="页面配置">
           <a-button class="nav-btn" type="outline" :shape="'circle'" @click="setVisible">
             <template #icon>
               <icon-settings />
@@ -75,25 +75,19 @@
             <a-doption>
               <a-space @click="switchRoles">
                 <icon-tag />
-                <span>
-                  {{ $t('messageBox.switchRoles') }}
-                </span>
+                <span> 切换角色 </span>
               </a-space>
             </a-doption>
             <a-doption>
               <a-space @click="$router.push({ name: 'UserInfo' })">
                 <icon-user />
-                <span>
-                  {{ $t('messageBox.userCenter') }}
-                </span>
+                <span> 用户中心 </span>
               </a-space>
             </a-doption>
             <a-doption>
               <a-space @click="handleLogout">
                 <icon-export />
-                <span>
-                  {{ $t('messageBox.logout') }}
-                </span>
+                <span> 登出登录 </span>
               </a-space>
             </a-doption>
           </template>
@@ -175,8 +169,8 @@
     padding-left: 20px;
 
     .site-name {
-      font-size: 20px;
       color: var(--color-text-1);
+      font-size: 20px;
     }
   }
 
@@ -188,9 +182,11 @@
     display: flex;
     padding-right: 20px;
     list-style: none;
+
     :deep(.locale-select) {
       border-radius: 20px;
     }
+
     li {
       display: flex;
       align-items: center;
@@ -201,16 +197,19 @@
       color: var(--color-text-1);
       text-decoration: none;
     }
+
     .nav-btn {
-      border-color: rgb(var(--gray-2));
       color: rgb(var(--gray-8));
       font-size: 16px;
+      border-color: rgb(var(--gray-2));
     }
+
     .trigger-btn,
     .ref-btn {
       position: absolute;
       bottom: 14px;
     }
+
     .trigger-btn {
       margin-left: 14px;
     }

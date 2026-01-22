@@ -9,25 +9,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, onMounted, ref } from 'vue';
-  import enUS from '@arco-design/web-vue/es/locale/lang/en-us';
+  import { onMounted, ref } from 'vue';
   import zhCN from '@arco-design/web-vue/es/locale/lang/zh-cn';
   import GlobalSetting from '@/components/global-setting/index.vue';
-  import useLocale from '@/hooks/locale';
+
   import DingTalkJinBuTiWoff2 from '@/assets/webfont/DingTalk-JinBuTi.woff2';
   import DingTalkJinBuTiWoff from '@/assets/webfont/DingTalk-JinBuTi.woff';
 
-  const { currentLocale } = useLocale();
-  const locale = computed(() => {
-    switch (currentLocale.value) {
-      case 'zh-CN':
-        return zhCN;
-      case 'en-US':
-        return enUS;
-      default:
-        return zhCN;
-    }
-  });
+  const locale = zhCN;
 
   const isFontLoaded = ref(false);
 
