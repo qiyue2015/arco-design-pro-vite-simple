@@ -20,7 +20,7 @@ export function logout() {
 }
 
 export function getUserInfo() {
-  return axios.post<UserState>('/v1/store/user/info');
+  return axios.get<UserState>('/v1/store/user/info');
 }
 
 export function getMenuList() {
