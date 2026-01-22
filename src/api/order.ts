@@ -21,7 +21,7 @@ export interface OrderListRes {
 
 // 例表
 export function queryOrderList(params: OrderParams) {
-  return axios.get<OrderListRes>('/api/orders', {
+  return axios.get<OrderListRes>('/v1/store/orders', {
     params,
     paramsSerializer: (obj) => {
       return qs.stringify(obj);
