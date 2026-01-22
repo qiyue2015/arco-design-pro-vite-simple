@@ -1,9 +1,6 @@
 <template>
   <div class="container">
-    <Grid title="测试">
-      <!-- 工具条 -->
-      <GridToolbar @create="onCreate" @refresh="onRefresh" />
-
+    <Grid title="门店例表">
       <!-- 表格 -->
       <GridTable
         :loading="loading"
@@ -12,18 +9,10 @@
         :pagination="pagination"
         @page-change="onPageChange"
         @page-size-change="onPageSizeChange"
-        @edit="onEdit"
-        @delete="onDelete"
       >
-        <template #thumb="{ record }">
-          <a-image :src="record.thumb" width="120" fit="cover" />
-        </template>
-        <template #title="{ record }">
-          <a-link @click="onDetail(record)"></a-link>
-        </template>
         <template #status="{ record }">
-          <a-badge v-if="record.status === 'online'" status="normal" text="下线" />
-          <a-badge v-if="record.status === 'offline'" status="success" text="上线" />
+          <a-badge v-if="!record.status" status="normal" text="下线" />
+          <a-badge v-else status="success" text="上线" />
         </template>
       </GridTable>
     </Grid>
@@ -39,16 +28,17 @@
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import { PaginationProps } from '@arco-design/web-vue';
   import { useLoading } from '@/hooks';
-  import { ShopParams, ShopRecord, queryShopList, deleteShop } from '@/api/shop';
+  import { ShopParams, ShopRecord, queryShopList } from '@/api/shop';
   import ShopAddModal from './components/ShopAddModal.vue';
   import ShopDetailDrawer from './components/ShopDetailDrawer.vue';
 
   const tableColumns = computed<TableColumnData[]>(() => [
-    { title: '封面', slotName: 'thumb' },
-    { title: '标题', slotName: 'title' },
-    { title: '摘要', dataIndex: 'description' },
-    { title: '状态', slotName: 'status' },
-    { title: '操作', slotName: 'action', width: 200, align: 'center' },
+    { title: '门店名称', dataIndex: 'name', width: 160, fixed: 'left' },
+    { title: '门店地址', dataIndex: 'address', width: 200, tooltip: true, ellipsis: true },
+    { title: '联系人', dataIndex: 'contact_name', width: 120 },
+    { title: '联系电话', dataIndex: 'contact_phone', width: 160 },
+    { title: '状态', dataIndex: 'status', slotName: 'status', width: 100 },
+    { title: '添加时间', dataIndex: 'created_at', width: 200, fixed: 'right' },
   ]);
 
   const { loading, setLoading } = useLoading(false);
@@ -60,11 +50,11 @@
   const fetchData = async (params = queryParams) => {
     try {
       setLoading(true);
-      const { data } = await queryShopList(params);
-      renderData.value = data.list;
-      pagination.total = data.total;
-      pagination.current = params.current;
-      pagination.pageSize = params.pageSize;
+      const { data, meta } = await queryShopList(params);
+      renderData.value = data;
+      pagination.total = meta.total;
+      pagination.current = meta.page;
+      pagination.pageSize = meta.page_size;
     } finally {
       setLoading(false);
     }
@@ -87,31 +77,6 @@
     queryParams.current = 1;
     queryParams.pageSize = pageSize;
     fetchData();
-  };
-
-  const ShopAddModalRef = ref<InstanceType<typeof ShopAddModal>>();
-
-  // 新增
-  const onCreate = () => {
-    ShopAddModalRef.value?.onAdd();
-  };
-
-  // 修改
-  const onEdit = (item: ShopRecord) => {
-    ShopAddModalRef.value?.onEdit(item.id);
-  };
-
-  // 删除
-  const onDelete = async (item: ShopRecord) => {
-    setLoading(true);
-    await deleteShop(item.id);
-    onRefresh();
-  };
-
-  const ShopDetailDrawerRef = ref<InstanceType<typeof ShopDetailDrawer>>();
-
-  const onDetail = (item: ShopRecord) => {
-    ShopDetailDrawerRef.value?.onDetail(item.id);
   };
 
   onMounted(() => {

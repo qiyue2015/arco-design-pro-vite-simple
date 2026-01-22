@@ -4,9 +4,15 @@ import qs from 'query-string';
 
 export interface ShopRecord {
   id: number;
-  title: string;
-  description: string;
-  thumb: string;
+  ability_id: number;
+  out_store_id: string;
+  name: string;
+  address: string;
+  contact_name: string;
+  contact_phone: string;
+  status: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ShopParams extends Partial<ShopRecord> {
@@ -15,13 +21,13 @@ export interface ShopParams extends Partial<ShopRecord> {
 }
 
 export interface ShopListRes {
-  list: ShopRecord[];
-  total: number;
+  data: ShopRecord[];
+  meta: any;
 }
 
 // 例表
 export function queryShopList(params: ShopParams) {
-  return axios.get<ShopListRes>('/api/shops', {
+  return axios.get<any, ShopListRes>('/v1/store/shops', {
     params,
     paramsSerializer: (obj) => {
       return qs.stringify(obj);
