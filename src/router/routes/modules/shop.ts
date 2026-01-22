@@ -9,7 +9,7 @@ const SHOP: AppRouteRecordRaw = {
   meta: {
     title: '门店',
     requiresAuth: true,
-    icon: 'icon-settings',
+    icon: 'icon-apps',
     order: 1,
   },
   children: [

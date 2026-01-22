@@ -9,7 +9,7 @@ const ORDER: AppRouteRecordRaw = {
   meta: {
     title: '订单',
     requiresAuth: true,
-    icon: 'icon-list',
+    icon: 'icon-archive',
     order: 2,
   },
   children: [
