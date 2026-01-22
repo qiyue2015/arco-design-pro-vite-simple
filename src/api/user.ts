@@ -8,7 +8,7 @@ export interface LoginData {
 }
 
 export interface LoginRes {
-  token: string;
+  access_token: string;
 }
 
 export function login(data: LoginData) {
