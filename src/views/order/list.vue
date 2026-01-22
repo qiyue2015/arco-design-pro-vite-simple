@@ -1,8 +1,30 @@
 <template>
-  <div class="container">
-    <Grid title="测试">
+  <div class="page-container">
+    <Grid title="订单列表">
       <!-- 工具条 -->
-      <GridToolbar @create="onCreate" @refresh="onRefresh" />
+      <GridToolbar @refresh="onRefresh">
+        <template #prepend>
+          <a-space>
+            <a-input-group>
+              <a-select v-model="searchKey" :options="searchOptions" class="w-36" @change="onRefresh" />
+              <a-input
+                v-model="queryParams[searchKey as keyof OrderParams]"
+                class="w-72"
+                :placeholder="searchKey === 'store_trade_no' ? '请输入门店订单号' : '请输入订单号'"
+                allow-clear
+                @clear="onRefresh"
+                @press-enter="onRefresh"
+              />
+            </a-input-group>
+            <a-button type="primary" @click="onRefresh">
+              <template #icon>
+                <icon-search />
+              </template>
+              查询
+            </a-button>
+          </a-space>
+        </template>
+      </GridToolbar>
 
       <!-- 表格 -->
       <GridTable
@@ -12,25 +34,21 @@
         :pagination="pagination"
         @page-change="onPageChange"
         @page-size-change="onPageSizeChange"
-        @edit="onEdit"
-        @delete="onDelete"
       >
-        <template #thumb="{ record }">
-          <a-image :src="record.thumb" width="120" fit="cover" />
-        </template>
-        <template #title="{ record }">
-          <a-link @click="onDetail(record)"></a-link>
-        </template>
+        <template #amount="{ record }"> {{ record.amount }} 元 </template>
         <template #status="{ record }">
-          <a-badge v-if="record.status === 'online'" status="normal" text="下线" />
-          <a-badge v-if="record.status === 'offline'" status="success" text="上线" />
+          <a-tag v-if="statusMap[record.status]" :color="statusMap[record.status].color">
+            {{ statusMap[record.status].label }}
+          </a-tag>
+          <a-tag v-else color="gray">未知状态 ({{ record.status }})</a-tag>
+        </template>
+        <template #operations="{ record }">
+          <a-button type="text" size="small" @click="onDetail(record)"> 查看 </a-button>
         </template>
       </GridTable>
     </Grid>
 
-    <OrderAddModal ref="OrderAddModalRef" @on-save-success="onRefresh" />
-
-    <OrderDetailDrawer ref="OrderDetailDrawerRef" />
+    <OrderDetailDrawer ref="OrderDetailDrawerRef" @refresh="onRefresh" />
   </div>
 </template>
 
@@ -39,32 +57,48 @@
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import { PaginationProps } from '@arco-design/web-vue';
   import { useLoading } from '@/hooks';
-  import { OrderParams, OrderRecord, queryOrderList, deleteOrder } from '@/api/order';
-  import OrderAddModal from './components/OrderAddModal.vue';
+  import { OrderParams, OrderRecord, queryOrderList } from '@/api/order';
   import OrderDetailDrawer from './components/OrderDetailDrawer.vue';
 
   const tableColumns = computed<TableColumnData[]>(() => [
-    { title: '封面', slotName: 'thumb' },
-    { title: '标题', slotName: 'title' },
-    { title: '摘要', dataIndex: 'description' },
-    { title: '状态', slotName: 'status' },
-    { title: '操作', slotName: 'action', width: 200, align: 'center' },
+    { title: '交易时间', dataIndex: 'pay_time', width: 180 },
+    { title: '订单号', dataIndex: 'order_no', width: 220 },
+    { title: '门店订单号', dataIndex: 'store_trade_no', width: 220 },
+    { title: '交易金额', slotName: 'amount', width: 100 },
+    { title: '交易状态', slotName: 'status', width: 100 },
+    { title: '门店', dataIndex: 'store.name', width: 150 },
+    { title: '操作', slotName: 'operations', fixed: 'right', width: 100 },
   ]);
+
+  const statusMap: Record<number, { label: string; color: string }> = {
+    0: { label: '待支付', color: 'orange' },
+    1: { label: '已支付', color: 'green' },
+    2: { label: '已取消', color: 'gray' },
+    3: { label: '退款中', color: 'arcoblue' },
+    4: { label: '已退款', color: 'red' },
+    5: { label: '部分退款', color: 'cyan' },
+    6: { label: '支付失败', color: 'red' },
+  };
 
   const { loading, setLoading } = useLoading(false);
   const renderData = ref<OrderRecord[]>([]);
   const basePagination = { current: 1, pageSize: 10 };
   const pagination = reactive<PaginationProps>({ ...basePagination, showPageSize: true, showTotal: true });
   const queryParams = reactive<OrderParams>({ ...basePagination });
+  const searchKey = ref('store_trade_no');
+  const searchOptions = [
+    { label: '门店订单号', value: 'store_trade_no' },
+    { label: '订单号', value: 'order_no' },
+  ];
 
   const fetchData = async (params = queryParams) => {
     try {
       setLoading(true);
-      const { data } = await queryOrderList(params);
-      renderData.value = data.list;
-      pagination.total = data.total;
-      pagination.current = params.current;
-      pagination.pageSize = params.pageSize;
+      const { data, meta } = await queryOrderList(params);
+      renderData.value = data;
+      pagination.total = meta.total;
+      pagination.current = meta.page;
+      pagination.pageSize = meta.page_size;
     } finally {
       setLoading(false);
     }
@@ -73,6 +107,12 @@
   // 刷新
   const onRefresh = () => {
     queryParams.current = 1;
+    // 确保只保留当前选中的搜索字段，清除另一个
+    if (searchKey.value === 'store_trade_no') {
+      delete queryParams.order_no;
+    } else {
+      delete queryParams.store_trade_no;
+    }
     fetchData();
   };
 
@@ -89,38 +129,13 @@
     fetchData();
   };
 
-  const OrderAddModalRef = ref<InstanceType<typeof OrderAddModal>>();
-
-  // 新增
-  const onCreate = () => {
-    OrderAddModalRef.value?.onAdd();
-  };
-
-  // 修改
-  const onEdit = (item: OrderRecord) => {
-    OrderAddModalRef.value?.onEdit(item.id);
-  };
-
-  // 删除
-  const onDelete = async (item: OrderRecord) => {
-    setLoading(true);
-    await deleteOrder(item.id);
-    onRefresh();
-  };
-
   const OrderDetailDrawerRef = ref<InstanceType<typeof OrderDetailDrawer>>();
 
   const onDetail = (item: OrderRecord) => {
-    OrderDetailDrawerRef.value?.onDetail(item.id);
+    OrderDetailDrawerRef.value?.onDetail(item);
   };
 
   onMounted(() => {
     fetchData();
   });
 </script>
-
-<style lang="less" scoped>
-  .container {
-    padding: 20px;
-  }
-</style>
