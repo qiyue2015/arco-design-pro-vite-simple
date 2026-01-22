@@ -18,7 +18,7 @@ const ORDER: AppRouteRecordRaw = {
       name: 'OrderList',
       component: () => import('@/views/order/list.vue'),
       meta: {
-        title: '订单列表',
+        title: '交易订单',
         requiresAuth: true,
         roles: ['*'],
         icon: 'icon-list',
