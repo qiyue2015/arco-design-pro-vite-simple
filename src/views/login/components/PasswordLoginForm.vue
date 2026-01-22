@@ -28,8 +28,8 @@
   const router = useRouter();
 
   const userInfo = reactive({
-    username: 'admin',
-    password: '111111',
+    username: '',
+    password: '',
   });
 
   const rules = {
