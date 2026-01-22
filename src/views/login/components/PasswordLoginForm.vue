@@ -8,9 +8,6 @@
         <a-input-password v-model="userInfo.password" type="password" placeholder="请输入登录密码" />
       </a-form-item>
       <a-form-item hide-label>
-        <AgreementNotice type="login" />
-      </a-form-item>
-      <a-form-item hide-label>
         <a-button type="primary" html-type="submit" long :loading="loading"> 登录 </a-button>
       </a-form-item>
     </a-form>
@@ -25,7 +22,6 @@
   import { DEFAULT_ROUTE_NAME } from '@/router/constants';
   import useLoading from '@/hooks/loading';
   import { useUserStore } from '@/store';
-  import AgreementNotice from './AgreementNotice.vue';
 
   const { t } = useI18n();
   const { loading, setLoading } = useLoading();

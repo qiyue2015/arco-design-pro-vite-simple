@@ -17,29 +17,12 @@ const router = createRouter({
       redirect: { name: DEFAULT_ROUTE_NAME },
     },
     {
-      path: '/auth',
-      redirect: '/auth/login',
-      component: () => import('@/views/auth/index.vue'),
-      children: [
-        {
-          path: 'login',
-          name: 'login',
-          component: () => import('@/views/auth/login.vue'),
-          meta: {
-            requiresAuth: false,
-            locale: 'auth.login',
-          },
-        },
-        {
-          path: 'register',
-          name: 'register',
-          component: () => import('@/views/auth/register.vue'),
-          meta: {
-            requiresAuth: false,
-            locale: 'auth.register',
-          },
-        },
-      ],
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/login/index.vue'),
+      meta: {
+        requiresAuth: false,
+      },
     },
     ...appRoutes,
     REDIRECT_MAIN,

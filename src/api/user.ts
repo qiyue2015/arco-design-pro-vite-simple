@@ -12,7 +12,7 @@ export interface LoginRes {
 }
 
 export function login(data: LoginData) {
-  return axios.post<LoginRes>('/api/user/login', data);
+  return axios.post<LoginRes>('/v1/store/login', data);
 }
 
 export function logout() {
