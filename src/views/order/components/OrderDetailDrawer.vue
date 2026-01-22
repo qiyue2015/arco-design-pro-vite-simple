@@ -1,0 +1,38 @@
+<template>
+  <a-drawer v-model:visible="visible" title="详情" :width="600" :footer="false">
+    <a-skeleton v-if="loading">
+      <a-skeleton-line :rows="3" :widths="['100%', '100%', '60%']" />
+    </a-skeleton>
+    <a-descriptions v-else :column="1" size="large" class="general-description">
+      <a-descriptions-item label="ID"></a-descriptions-item>
+      <a-descriptions-item label="标题"></a-descriptions-item>
+      <a-descriptions-item label="介绍"></a-descriptions-item>
+      <a-descriptions-item label="封面"></a-descriptions-item>
+    </a-descriptions>
+  </a-drawer>
+</template>
+
+<script lang="ts" setup>
+  import { ref, defineExpose } from 'vue';
+  import { useVisible, useLoading } from '@/hooks';
+  import { AnyObject } from '@/types/global';
+  import { getOrderDetail } from '@/api/order';
+
+  const { visible, setVisible } = useVisible(false);
+  const { loading, setLoading } = useLoading(true);
+
+  const item = ref<AnyObject>({});
+
+  // 打开详情
+  const onDetail = async (id: number) => {
+    try {
+      setVisible(true);
+      const { data } = await getOrderDetail(id);
+      item.value = data;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  defineExpose({ onDetail });
+</script>
