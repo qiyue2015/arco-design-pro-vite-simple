@@ -7,8 +7,9 @@ const SHOP: AppRouteRecordRaw = {
   redirect: '/shop/index',
   component: DEFAULT_LAYOUT,
   meta: {
-    title: '店铺管理',
+    title: '门店',
     requiresAuth: true,
+    icon: 'icon-settings',
   },
   children: [
     {
@@ -16,9 +17,10 @@ const SHOP: AppRouteRecordRaw = {
       name: 'ShopIndex',
       component: () => import('@/views/shop/index.vue'),
       meta: {
-        title: '店铺主页',
+        title: '门店例表',
         requiresAuth: true,
         roles: ['*'],
+        icon: 'icon-home',
       },
     },
   ],

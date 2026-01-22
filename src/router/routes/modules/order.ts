@@ -7,8 +7,9 @@ const ORDER: AppRouteRecordRaw = {
   redirect: '/order/list',
   component: DEFAULT_LAYOUT,
   meta: {
-    title: '订单管理',
+    title: '订单',
     requiresAuth: true,
+    icon: 'icon-list',
   },
   children: [
     {
@@ -19,6 +20,7 @@ const ORDER: AppRouteRecordRaw = {
         title: '订单列表',
         requiresAuth: true,
         roles: ['*'],
+        icon: 'icon-list',
       },
     },
     {
@@ -26,9 +28,10 @@ const ORDER: AppRouteRecordRaw = {
       name: 'OrderRefund',
       component: () => import('@/views/order/refund.vue'),
       meta: {
-        title: '退款管理',
+        title: '退款列表',
         requiresAuth: true,
         roles: ['*'],
+        icon: 'icon-undo',
       },
     },
   ],
