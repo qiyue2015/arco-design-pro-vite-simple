@@ -10,6 +10,7 @@ const SHOP: AppRouteRecordRaw = {
     title: '门店',
     requiresAuth: true,
     icon: 'icon-settings',
+    order: 1,
   },
   children: [
     {

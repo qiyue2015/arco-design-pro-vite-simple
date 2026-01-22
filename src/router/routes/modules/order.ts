@@ -10,6 +10,7 @@ const ORDER: AppRouteRecordRaw = {
     title: '订单',
     requiresAuth: true,
     icon: 'icon-list',
+    order: 2,
   },
   children: [
     {
