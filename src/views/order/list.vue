@@ -62,8 +62,8 @@
 
   const tableColumns = computed<TableColumnData[]>(() => [
     { title: '交易时间', dataIndex: 'pay_time', width: 180 },
-    { title: '订单号', dataIndex: 'order_no', width: 220 },
-    { title: '门店订单号', dataIndex: 'store_trade_no', width: 220 },
+    { title: '订单号', dataIndex: 'order_no', width: 240 },
+    { title: '门店订单号', dataIndex: 'store_trade_no', width: 240 },
     { title: '交易金额', slotName: 'amount', width: 100 },
     { title: '交易状态', slotName: 'status', width: 100 },
     { title: '门店', dataIndex: 'store.name', width: 150 },
