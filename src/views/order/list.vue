@@ -61,11 +61,12 @@
   import OrderDetailDrawer from './components/OrderDetailDrawer.vue';
 
   const tableColumns = computed<TableColumnData[]>(() => [
-    { title: '交易时间', dataIndex: 'pay_time', width: 180 },
-    { title: '订单号', dataIndex: 'order_no', width: 240 },
-    { title: '门店订单号', dataIndex: 'store_trade_no', width: 240 },
+    { title: '创建时间', dataIndex: 'created_at', width: 180 },
+    { title: '订单号', dataIndex: 'order_no', width: 260 },
+    { title: '门店订单号', dataIndex: 'store_trade_no', width: 280 },
     { title: '交易金额', slotName: 'amount', width: 100 },
     { title: '交易状态', slotName: 'status', width: 100 },
+    { title: '交易时间', dataIndex: 'pay_time', width: 180 },
     { title: '门店', dataIndex: 'store.name', width: 150 },
     { title: '操作', slotName: 'operations', fixed: 'right', width: 100 },
   ]);

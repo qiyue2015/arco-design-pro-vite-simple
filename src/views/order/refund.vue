@@ -30,8 +30,6 @@
       </GridTable>
     </Grid>
 
-    <OrderAddModal ref="OrderAddModalRef" @on-save-success="onRefresh" />
-
     <OrderDetailDrawer ref="OrderDetailDrawerRef" />
   </div>
 </template>
@@ -46,8 +44,8 @@
 
   const tableColumns = computed<TableColumnData[]>(() => [
     { title: '创建时间', dataIndex: 'created_at', width: 180 },
-    { title: '退款单号', dataIndex: 'refund_no', width: 230 },
-    { title: '门店订单号', dataIndex: 'order.store_trade_no', width: 230 },
+    { title: '退款单号', dataIndex: 'refund_no', width: 260 },
+    { title: '门店订单号', dataIndex: 'order.store_trade_no', width: 280 },
     { title: '退款金额', slotName: 'amount', width: 120 },
     { title: '状态', slotName: 'status', width: 100 },
     { title: '退款时间', dataIndex: 'refund_time', width: 200 },
