@@ -20,4 +20,13 @@ export interface UserState {
   nickname?: string;
   is_identity_verified: boolean;
   introduce?: string;
+  merchant_id?: string;
+  ability_id?: number;
+  username?: string;
+  store_ids?: any;
+  status?: boolean;
+  last_login_ip?: string;
+  deleted_at?: string;
+  created_at?: string;
+  updated_at?: string;
 }

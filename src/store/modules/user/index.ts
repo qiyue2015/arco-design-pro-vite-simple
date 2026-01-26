@@ -34,6 +34,15 @@ const useUserStore = defineStore('user', {
     role: '',
     is_identity_verified: false,
     introduce: '',
+    merchant_id: '',
+    ability_id: undefined,
+    username: '',
+    store_ids: null,
+    status: false,
+    last_login_ip: '',
+    deleted_at: undefined,
+    created_at: undefined,
+    updated_at: undefined,
   }),
 
   getters: {
