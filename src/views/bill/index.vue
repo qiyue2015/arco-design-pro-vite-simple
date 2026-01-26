@@ -5,7 +5,6 @@
         <a-form :model="formData" class="w-full max-w-xl">
           <a-form-item field="store_id" label="对账单归属">
             <a-select v-model="formData.store_id" placeholder="全部门店" allow-clear>
-              <a-option :value="undefined">全部门店</a-option>
               <a-option v-for="item in storeList" :key="item.id" :value="item.id">
                 {{ item.name }}
               </a-option>
