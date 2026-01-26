@@ -1,6 +1,26 @@
 <template>
   <div class="container">
     <Grid title="门店例表">
+      <GridToolbar @refresh="onRefresh">
+        <template #prepend>
+          <a-space>
+            <a-input
+              v-model="queryParams.out_store_id"
+              class="w-72"
+              placeholder="请输入门店号"
+              allow-clear
+              @press-enter="onRefresh"
+            />
+            <a-button type="primary" @click="onRefresh">
+              <template #icon>
+                <icon-search />
+              </template>
+              查询
+            </a-button>
+          </a-space>
+        </template>
+      </GridToolbar>
+
       <!-- 表格 -->
       <GridTable
         :loading="loading"
@@ -33,7 +53,8 @@
   import ShopDetailDrawer from './components/ShopDetailDrawer.vue';
 
   const tableColumns = computed<TableColumnData[]>(() => [
-    { title: '门店名称', dataIndex: 'name', width: 160, fixed: 'left' },
+    { title: '门店号', dataIndex: 'out_store_id', width: 100, fixed: 'left' },
+    { title: '门店名称', dataIndex: 'name', width: 160 },
     { title: '门店地址', dataIndex: 'address', width: 200, tooltip: true, ellipsis: true },
     { title: '联系人', dataIndex: 'contact_name', width: 120 },
     { title: '联系电话', dataIndex: 'contact_phone', width: 160 },
