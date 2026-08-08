@@ -3,21 +3,22 @@ import { AppRouteRecordRaw } from '../types';
 
 const DASHBOARD: AppRouteRecordRaw = {
   path: '/dashboard',
-  name: 'Dashboard',
-  redirect: '/dashboard/overview',
+  name: 'dashboard',
   component: DEFAULT_LAYOUT,
   meta: {
+    locale: 'menu.dashboard',
     requiresAuth: true,
+    icon: 'icon-dashboard',
+    order: 0,
   },
   children: [
     {
-      path: 'overview',
-      name: 'Overview',
-      component: () => import('@/views/dashboard/overview.vue'),
+      path: 'workplace',
+      name: 'Workplace',
+      component: () => import('@/views/dashboard/workplace/index.vue'),
       meta: {
-        title: '概览',
+        locale: 'menu.dashboard.workplace',
         requiresAuth: true,
-        icon: 'icon-dashboard',
         roles: ['*'],
       },
     },

@@ -34,15 +34,6 @@ const useUserStore = defineStore('user', {
     role: '',
     is_identity_verified: false,
     introduce: '',
-    merchant_id: '',
-    ability_id: undefined,
-    username: '',
-    store_ids: null,
-    status: false,
-    last_login_ip: '',
-    deleted_at: undefined,
-    created_at: undefined,
-    updated_at: undefined,
   }),
 
   getters: {
@@ -79,7 +70,7 @@ const useUserStore = defineStore('user', {
     async login(loginForm: LoginData) {
       try {
         const res = await userLogin(loginForm);
-        setToken(res.data.access_token);
+        setToken(res.data.token);
       } catch (err) {
         clearToken();
         throw err;
@@ -89,7 +80,7 @@ const useUserStore = defineStore('user', {
     async register(registerForm: RegisterData) {
       try {
         const res = await userRegister(registerForm);
-        setToken(res.data.access_token);
+        setToken(res.data.token);
       } catch (err) {
         clearToken();
         throw err;

@@ -6,12 +6,14 @@
           <span> {{ item.title }}{{ formatUnreadLength(item.key) }} </span>
         </template>
         <a-result v-if="!renderList.length" status="404">
-          <template #subtitle> 暂无内容 </template>
+          <template #subtitle> {{ $t('messageBox.noContent') }} </template>
         </a-result>
         <List :render-list="renderList" :unread-count="unreadCount" @item-click="handleItemClick" />
       </a-tab-pane>
       <template #extra>
-        <a-button type="text" @click="emptyList"> 清空 </a-button>
+        <a-button type="text" @click="emptyList">
+          {{ $t('messageBox.tab.button') }}
+        </a-button>
       </template>
     </a-tabs>
   </a-spin>
@@ -19,7 +21,7 @@
 
 <script lang="ts" setup>
   import { ref, reactive, toRefs, computed } from 'vue';
-
+  import { useI18n } from 'vue-i18n';
   import { queryMessageList, setMessageStatus, MessageRecord, MessageListType } from '@/api/message';
   import useLoading from '@/hooks/loading';
   import List from './list.vue';
@@ -31,7 +33,7 @@
   }
   const { loading, setLoading } = useLoading(true);
   const messageType = ref('message');
-
+  const { t } = useI18n();
   const messageData = reactive<{
     renderList: MessageRecord[];
     messageList: MessageRecord[];
@@ -43,15 +45,15 @@
   const tabList: TabItem[] = [
     {
       key: 'message',
-      title: '消息',
+      title: t('messageBox.tab.title.message'),
     },
     {
       key: 'notice',
-      title: '通知',
+      title: t('messageBox.tab.title.notice'),
     },
     {
       key: 'todo',
-      title: '待办',
+      title: t('messageBox.tab.title.todo'),
     },
   ];
   async function fetchSourceData() {
@@ -101,15 +103,12 @@
   :deep(.arco-list-item-meta) {
     align-items: flex-start;
   }
-
   :deep(.arco-tabs-nav) {
     padding: 14px 0 12px 16px;
     border-bottom: 1px solid var(--color-neutral-3);
   }
-
   :deep(.arco-tabs-content) {
     padding-top: 0;
-
     .arco-result-subtitle {
       color: rgb(var(--gray-6));
     }

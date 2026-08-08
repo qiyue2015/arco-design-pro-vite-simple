@@ -107,7 +107,7 @@ setupMock({
           path: '/dashboard',
           name: 'dashboard',
           meta: {
-            title: '仪表盘-服务端',
+            locale: 'menu.server.dashboard',
             requiresAuth: true,
             icon: 'icon-dashboard',
             order: 1,
@@ -117,7 +117,7 @@ setupMock({
               path: 'workplace',
               name: 'Workplace',
               meta: {
-                title: '工作台-服务端',
+                locale: 'menu.server.workplace',
                 requiresAuth: true,
               },
             },
@@ -125,7 +125,7 @@ setupMock({
               path: 'https://arco.design',
               name: 'arcoWebsite',
               meta: {
-                title: 'Arco Design',
+                locale: 'menu.arcoWebsite',
                 requiresAuth: true,
               },
             },

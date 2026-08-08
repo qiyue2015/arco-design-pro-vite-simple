@@ -1,6 +1,6 @@
 <script lang="tsx">
   import { defineComponent, ref, h, compile, computed } from 'vue';
-
+  import { useI18n } from 'vue-i18n';
   import { useRoute, useRouter, RouteRecordRaw } from 'vue-router';
   import type { RouteMeta } from 'vue-router';
   import { useAppStore } from '@/store';
@@ -11,6 +11,7 @@
   export default defineComponent({
     emit: ['collapse'],
     setup() {
+      const { t } = useI18n();
       const appStore = useAppStore();
       const router = useRouter();
       const route = useRoute();
@@ -92,7 +93,7 @@
               const icon = element?.meta?.icon ? () => h(compile(`<${element?.meta?.icon}/>`)) : null;
               if (element?.children && element?.children.length) {
                 const node = groupMenu.value ? (
-                  <a-menu-item-group key={element?.name} title={element?.meta?.title || ''}>
+                  <a-menu-item-group key={element?.name} title={t(element?.meta?.locale || '')}>
                     {travel(element?.children)}
                   </a-menu-item-group>
                 ) : (
@@ -100,7 +101,7 @@
                     key={element?.name}
                     v-slots={{
                       icon,
-                      title: () => h(compile(element?.meta?.title || '')),
+                      title: () => h(compile(t(element?.meta?.locale || ''))),
                     }}
                   >
                     {travel(element?.children)}
@@ -110,7 +111,7 @@
               } else {
                 const node = (
                   <a-menu-item key={element?.name} v-slots={{ icon }} onClick={() => goto(element)}>
-                    {element?.meta?.title || ''}
+                    {t(element?.meta?.locale || '')}
                   </a-menu-item>
                 );
                 nodes.push(node as never);
@@ -148,7 +149,6 @@
       display: flex;
       align-items: center;
     }
-
     .arco-icon {
       &:not(.arco-icon-down) {
         font-size: 18px;

@@ -8,19 +8,19 @@ export interface LoginData {
 }
 
 export interface LoginRes {
-  access_token: string;
+  token: string;
 }
 
 export function login(data: LoginData) {
-  return axios.post<LoginRes>('/v1/store/login', data);
+  return axios.post<LoginRes>('/api/user/login', data);
 }
 
 export function logout() {
-  return axios.post<LoginRes>('/v1/store/logout');
+  return axios.post<LoginRes>('/api/user/logout');
 }
 
 export function getUserInfo() {
-  return axios.get<UserState>('/v1/store/user/info');
+  return axios.post<UserState>('/api/user/info');
 }
 
 export function getMenuList() {
