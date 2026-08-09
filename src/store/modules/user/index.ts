@@ -32,7 +32,7 @@ const useUserStore = defineStore('user', {
     accountId: undefined,
     certification: undefined,
     role: '',
-    is_identity_verified: false,
+
     introduce: '',
   }),
 

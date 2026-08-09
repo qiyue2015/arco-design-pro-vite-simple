@@ -18,6 +18,6 @@ export interface UserState {
   certification?: number;
   role: RoleType;
   nickname?: string;
-  is_identity_verified: boolean;
+
   introduce?: string;
 }

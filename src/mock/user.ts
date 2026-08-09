@@ -30,7 +30,6 @@ setupMock({
           accountId: '15012312300',
           certification: 1,
           role,
-          is_identity_verified: Mock.Random.boolean(),
         });
       }
       return failResponseWrap(null, '未登录', 50008);
