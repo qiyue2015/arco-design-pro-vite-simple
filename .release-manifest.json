@@ -71,7 +71,6 @@
     "src/components/message-box/locale/zh-CN.ts",
     "src/components/navbar/index.vue",
     "src/components/qq-map-select/index.vue",
-    "src/components/quill-editor/index.vue",
     "src/components/tab-bar/index.vue",
     "src/components/tab-bar/readme.md",
     "src/components/tab-bar/tab-item.vue",
