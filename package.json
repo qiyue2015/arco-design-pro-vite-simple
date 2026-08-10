@@ -1,7 +1,7 @@
 {
   "name": "admin9-pro",
   "description": "Admin9 Pro - 企业中后台管理系统，基于 Vue 和 Arco Design Pro",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "author": "Admin9 Team",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
     "nprogress": "^0.2.0",
-    "pinia": "^2.3.1",
+    "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.4.1",
     "query-string": "^8.2.0",
     "sortablejs": "^1.15.6",
