@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "sourceRepository": "qiyue2015/arco-design-pro-vue",
-  "sourceCommit": "459658ce17e9235633b81751decc718fae767c68",
+  "sourceCommit": "6cae70a8282813cd65b5ca12ae9582db6ab1ecc7",
   "previousRelease": {
-    "version": "1.0.6",
-    "sourceCommit": "9b7f952f33b97f302e2d06670bd1da7d9b026a74"
+    "version": "1.0.7",
+    "sourceCommit": "459658ce17e9235633b81751decc718fae767c68"
   }
 }

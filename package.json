@@ -1,7 +1,7 @@
 {
   "name": "admin9-pro",
   "description": "Admin9 Pro - 企业中后台管理系统，基于 Vue 和 Arco Design Pro",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "private": true,
   "author": "Admin9 Team",
   "license": "MIT",
@@ -105,10 +105,6 @@
     "node": ">=14.0.0"
   },
   "resolutions": {
-    "@vue/compiler-core": "3.5.41",
-    "@vue/compiler-dom": "3.5.41",
-    "@vue/compiler-sfc": "3.5.41",
-    "@vue/shared": "3.5.41",
     "bin-wrapper": "npm:bin-wrapper-china",
     "gifsicle": "5.2.0",
     "rollup": "^2.79.2"
