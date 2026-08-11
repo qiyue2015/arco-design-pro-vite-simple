@@ -9,7 +9,7 @@ setupMock({
     // Mock.XHR.prototype.withCredentials = true;
 
     // 用户信息
-    Mock.mock(new RegExp('/api/user/info'), () => {
+    Mock.mock(new RegExp('/user/info'), () => {
       if (isLogin()) {
         const role = window.localStorage.getItem('userRole') || 'admin';
         return successResponseWrap({
@@ -36,7 +36,7 @@ setupMock({
     });
 
     // 登录
-    Mock.mock(new RegExp('/api/user/login'), (params: MockParams) => {
+    Mock.mock(new RegExp('/user/login'), (params: MockParams) => {
       const { username, password, phone, code } = JSON.parse(params.body);
       // 账户密码登录
       if (username || password) {
@@ -79,7 +79,7 @@ setupMock({
       return failResponseWrap(null, '请输入账号信息', 50000);
     });
 
-    Mock.mock(new RegExp('/api/user/register'), (params: MockParams) => {
+    Mock.mock(new RegExp('/user/register'), (params: MockParams) => {
       const { phone, code } = JSON.parse(params.body);
       if (!phone) {
         return failResponseWrap(null, '手机号不能为空', 50000);
@@ -95,12 +95,12 @@ setupMock({
     });
 
     // 登出
-    Mock.mock(new RegExp('/api/user/logout'), () => {
+    Mock.mock(new RegExp('/user/logout'), () => {
       return successResponseWrap(null);
     });
 
     // 用户的服务端菜单
-    Mock.mock(new RegExp('/api/user/menu'), () => {
+    Mock.mock(new RegExp('/user/menu'), () => {
       const menuList = [
         {
           path: '/dashboard',
