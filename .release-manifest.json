@@ -2,8 +2,7 @@
   "schemaVersion": 1,
   "edition": "simple",
   "files": [
-    ".env.development",
-    ".env.production",
+    ".env.example",
     ".eslintignore",
     ".eslintrc.js",
     ".gitignore",
